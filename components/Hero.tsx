@@ -1,0 +1,36 @@
+import Image from "next/image";
+import members from "../public/images/hero1.png";
+
+export default function Hero() {
+    return (
+        <div className="bg-[url('../public/images/tealbg.png')] bg-no-repeat bg-top bg-contain">
+            <div className="py-12 relative">
+                <div className="container mx-auto flex flex-col md:flex-row items-center gap-3 px-6 md:pr-0 md:pl-24 pb-12">
+                    <div className="flex-1">
+                        <h1 className="text-3xl md:text-7xl font-bold text-green-800 mb-4">
+                        Promoting Excellence <br /> in Private Education
+                        </h1>
+                        <p className="text-gray-700 mb-6 text-lg">We are the umbrella body that brings together all registered private school owners within Alimosho Local Government Area of Lagos State, with the purpose of ensuring quality and standard in private education delivery.</p>
+                        <div className="flex gap-4">
+                            <button className="bg-green-700 text-white px-6 py-3 rounded-lg shadow hover:bg-green-800 cursor-pointer">
+                                Register Your School
+                            </button>
+                            <button className="border border-green-700 text-green-700 px-6 py-3 rounded-lg hover:bg-green-100 cursor-pointer">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                    <div className="flex-1">
+                        <Image
+                        src={members}
+                        alt="NAPPS Members"
+                        width={600}
+                        height={400}
+                        className="rounded-lg w-full"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
