@@ -1,24 +1,24 @@
 import React from 'react'
 import Image from 'next/image';
-import mike from '../public/images/executives/mike.jpg'
-import esther from '../public/images/executives/esther.jpg'
-import alfred from '../public/images/executives/alfred.jpg'
-import sunday from '../public/images/executives/sunday.jpg'
-import falohun from '../public/images/executives/falohun.jpg'
-import kemi from '../public/images/executives/kemi.jpg'
-import aloma from '../public/images/executives/aloma.jpg'
-import segun from '../public/images/executives/segun.jpg'
+import ojetunde from '../public/images/past_excos/ojetunde.jpg'
+import roseline from '../public/images/past_excos/roseline.jpg'
+import oriola from '../public/images/past_excos/oriola.jpg'
+import helen from '../public/images/past_excos/helen.jpg'
+import edena from '../public/images/past_excos/edena.jpg'
+import taiwo from '../public/images/past_excos/taiwo.jpg'
+import ngozi from '../public/images/past_excos/ngozi2.jpg'
+import sosami from '../public/images/past_excos/sosami2.jpg'
 
 export default function PastExecutives() {
     const members = [
-        { name: "Pa. J.O Ojetunde", role: "Pionner Chairman", school: "Glory International School", img: mike },
-        { name: "Mrs Taiwo Ajayi", role: "Second Chairperson", school: "Lycett School", img: esther },
-        { name: "Pa. S. O. O Sosami", role: "Third Chairman", school: "Anchor Mirror School", img: alfred },
-        { name: "Princess Helen Adesina", role: "Fourth Chairperson", school: "Marallen School", img: sunday },
-        { name: "Mrs. Oretuga Roseline", role: "Fifth Chairperson", school: "Roseville School", img: falohun },
-        { name: "Dr. Mrs E. A Oriola", role: "Sixth Chairperson", school: "Cosmos School", img: segun },
-        { name: "Late Chief E. Abiodun-Edena", role: "Seventh Chairman", school: "Edena School", img: aloma },
-        { name: "Mrs Ogbonna Ngozi A.", role: "Eight Chairperson", school: "Masterguide School", img: kemi },
+        { name: "Pa. J.O Ojetunde", role: "Pionner Chairman", school: "Glory International School", img: ojetunde },
+        { name: "Mrs Taiwo Ajayi", role: "Second Chairperson", school: "Lycett School", img: taiwo },
+        { name: "Pa. S. O. O Sosami", role: "Third Chairman", school: "Anchor Mirror School", img: sosami },
+        { name: "Princess Helen Adesina", role: "Fourth Chairperson", school: "Marallen School", img: helen },
+        { name: "Mrs. Oretuga Roseline", role: "Fifth Chairperson", school: "Roseville School", img: roseline },
+        { name: "Dr. Mrs E. A Oriola", role: "Sixth Chairperson", school: "Cosmos School", img: oriola },
+        { name: "Late Chief E. Abiodun-Edena", role: "Seventh Chairman", school: "Edena School", img: edena },
+        { name: "Mrs Ogbonna Ngozi A.", role: "Eight Chairperson", school: "Masterguide School", img: ngozi },
     ];
     return (
         <div className="pb-16 px-6 md:px-24 relative">
@@ -32,14 +32,17 @@ export default function PastExecutives() {
                         <Image
                         src={m.img}
                         alt={m.name}
-                        className="w-full h-64 object-cover rounded-2xl object-top shadow inset-24"
+                        className="w-[450px] h-64 object-cover rounded-2xl object-center shadow inset-24"
                         width={500}
                         height={500}
                         />
                         <div className='mt-4 text-left w-full flex flex-col gap-2 pb-3 px-2'>
-                            <h3 className="font-semibold text-xl text-green-700">{m.name}</h3>
+                            <h3 className="font-semibold text-[22px] text-green-700">{m.name}</h3>
                             <hr className='border border-gray-200 w-full' />
-                            <p className="text-sm text-gray-600 uppercase">{m.role}</p>
+                            <div>
+                                <p className="text-md text-gray-800 uppercase">{m.role}</p>
+                                <p className="text-sm text-gray-500 uppercase">{m.school}</p>
+                            </div>
                         </div>
                     </div>
                 ))}
