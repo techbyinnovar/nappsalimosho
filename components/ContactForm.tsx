@@ -1,6 +1,6 @@
 const ContactForm = () => {
     return (
-        <div className="bg-white p-8 rounded-3xl shadow-md mb-16 w-[70%] flex flex-col items-center">
+        <div className="bg-white p-8 rounded-3xl shadow-md md:mb-16 md:w-[70%] w-full flex flex-col items-center">
             <form className="w-full">
                 <div className="grid md:grid-cols-2 gap-6 w-full mb-6">
                     <div>

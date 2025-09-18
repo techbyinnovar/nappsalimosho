@@ -5,7 +5,7 @@ import React from 'react'
 export default function Blog() {
   const categories = ["All Posts", "Education", "Policy", "Events", "Seminar", "News"];
   return (
-    <div>
+    <div className='bg-white'>
       <section className="text-center py-20 bg-[url('../public/images/tealbg.png')] bg-no-repeat bg-bottom bg-cover">
         <h1 className="text-4xl md:text-6xl font-bold text-green-700 mb-4">
           NAPPS Blog
