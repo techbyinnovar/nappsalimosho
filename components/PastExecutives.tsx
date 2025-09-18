@@ -11,14 +11,14 @@ import sosami from '../public/images/past_excos/sosami2.jpg'
 
 export default function PastExecutives() {
     const members = [
-        { name: "Pa. J.O Ojetunde", role: "Pionner Chairman", school: "Glory International School", img: ojetunde },
-        { name: "Mrs Taiwo Ajayi", role: "Second Chairperson", school: "Lycett School", img: taiwo },
-        { name: "Pa. S. O. O Sosami", role: "Third Chairman", school: "Anchor Mirror School", img: sosami },
-        { name: "Princess Helen Adesina", role: "Fourth Chairperson", school: "Marallen School", img: helen },
-        { name: "Mrs. Oretuga Roseline", role: "Fifth Chairperson", school: "Roseville School", img: roseline },
-        { name: "Dr. Mrs E. A Oriola", role: "Sixth Chairperson", school: "Cosmos School", img: oriola },
-        { name: "Late Chief E. Abiodun-Edena", role: "Seventh Chairman", school: "Edena School", img: edena },
-        { name: "Mrs Ogbonna Ngozi A.", role: "Eight Chairperson", school: "Masterguide School", img: ngozi },
+        { name: "Pa. J.O Ojetunde", role: "Pionner Chairman", school: "Glory International School", img: ojetunde, year: "", },
+        { name: "Mrs Taiwo Ajayi", role: "Second Chairperson", school: "Lycett School", img: taiwo, year: "", },
+        { name: "Pa. S. O. O Sosami", role: "Third Chairman", school: "Anchor Mirror School", img: sosami, year: "2007 - 2011", },
+        { name: "Princess Helen Adesina", role: "Fourth Chairperson", school: "Marallen School", img: helen, year: "2011 - 2013", },
+        { name: "Late Chief E. Abiodun-Edena", role: "Fifth Chairman", school: "Edena School", img: edena, year: "2013 - 2015", },
+        { name: "Mrs. Oretuga Roseline", role: "Sixth Chairperson", school: "Roseville School", img: roseline, year: "2015 - 2017", },
+        { name: "Dr. Mrs E. A Oriola", role: "Seventh Chairperson", school: "Cosmos School", img: oriola, year: "2017 - 2019", },
+        { name: "Mrs Ogbonna Ngozi A.", role: "Eight Chairperson", school: "Masterguide School", img: ngozi, year: "(2019 - 2023)", },
     ];
     return (
         <div className="pb-16 px-6 md:px-24 relative">
@@ -37,7 +37,7 @@ export default function PastExecutives() {
                         height={500}
                         />
                         <div className='mt-4 text-left w-full flex flex-col gap-2 pb-3 px-2'>
-                            <h3 className="font-semibold text-[22px] text-green-700">{m.name}</h3>
+                            <h3 className="font-semibold text-[22px] text-green-700">{m.name} - {m.year}</h3>
                             <hr className='border border-gray-200 w-full' />
                             <div>
                                 <p className="text-md text-gray-800 uppercase">{m.role}</p>

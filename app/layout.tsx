@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${afacad.variable} antialiased`}
+        className={`${afacad.variable} antialiased bg-white`}
       >
         <Header />
         {children}

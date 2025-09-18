@@ -59,13 +59,13 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {open && (
-            <nav className="md:hidden bg-green-50 px-6 py-4 space-y-3">
+            <nav className="md:hidden flex flex-col bg-white text-lg px-6 hover:underline text-green-800 py-4 space-y-3 text-center">
             <Link href="/" onClick={() => setOpen(false)}>Home</Link>
             <Link href="/about" onClick={() => setOpen(false)}>About</Link>
             <Link href="/schools" onClick={() => setOpen(false)}>Schools</Link>
             <Link href="/blog" onClick={() => setOpen(false)}>Blog</Link>
             <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
-            <button className="bg-green-700 text-white w-full py-2 rounded-lg cursor-pointer">
+            <button onClick={() => setIsModalOpen(true)} className="bg-green-700 text-white w-full py-2 rounded-lg cursor-pointer">
                 Register a School
             </button>
             </nav>

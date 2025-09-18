@@ -22,7 +22,7 @@ const FAQSection = () => {
             <div className="space-y-6 max-w-3xl mx-auto">
                 {faqs.map((faq, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-semibold mb-2">{faq.question}</h3>
+                    <h3 className="text-lg font-semibold mb-2 text-green-700">{faq.question}</h3>
                     <p className="text-gray-700">{faq.answer}</p>
                 </div>
                 ))}

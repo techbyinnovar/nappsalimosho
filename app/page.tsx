@@ -11,7 +11,7 @@ import Adverts from "@/components/Adverts";
 export default function Home() {
   return (
     <div className="">
-      <main>
+      <main className="bg-white">
         <Hero />
         <WhoWeAre />
         <CoreValues />

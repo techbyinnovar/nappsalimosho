@@ -6,7 +6,7 @@ import email from "../../public/images/icons/email.png"
 import phone from "../../public/images/icons/phone.png"
 const ContactSection = () => {
   return (
-    <section className="">
+    <section className="bg-white">
       <div className="text-center py-24 bg-[url('../public/images/tealbg.png')] bg-no-repeat bg-bottom bg-cover">
         <h1 className="text-4xl md:text-6xl font-bold text-green-700 mb-4">Get In Touch</h1>
         <p className="max-w-4xl mx-auto text-lg md:text-2xl text-gray-700">We are here to support Private School Proprietors within Alimosho. Reach out to us for any inquiries, support or partnership opportunities.</p>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ad1 from "../public/images/adverts/catalog.jpg"
 import ad2 from "../public/images/adverts/nappsapp.jpg"
-import ad3 from "../public/images/adverts/zap-promo.jpg"
+import ad3 from "../public/images/adverts/nappsapp.jpg"
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 
 const ads = [

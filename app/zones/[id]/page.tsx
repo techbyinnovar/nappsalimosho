@@ -39,7 +39,7 @@ function HeroSchool({ name, students, staff, description }: any) {
                 <span className="inline-block bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm font-medium mb-4">
                 NAPPS Member
                 </span>
-                <h1 className="text-3xl md:text-6xl font-bold mb-3">{name}</h1>
+                <h1 className="text-3xl md:text-6xl font-bold mb-3 text-green-800">{name}</h1>
                 <p className="text-gray-600 mb-4">{description}</p>
 
                 <div className="flex items-center gap-6 mb-6">

@@ -40,7 +40,7 @@ export default function Footer() {
                 <Image src={logo} alt="logo" width={80} height={80} />
                 <div className="flex flex-col">
                     <p className="text-white font-bold text-2xl mb-0">NAPPS </p>
-                    <p className="text-yellow-500 text-sm uppercase">Alimosho Chapter</p>
+                    <p className="text-[#FEF547] text-sm uppercase">Alimosho Chapter</p>
                 </div>
             </Link>
           </div>
@@ -56,10 +56,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3">
+        <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0">
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-3">Quick Links</h4>
+            <h4 className="font-semibold mb-3 text-[#FEF547]">Quick Links</h4>
             <ul className="space-y-2 text-sm text-white/80">
               <li><a href="/" className="hover:underline">Home</a></li>
               <li><a href="/about" className="hover:underline">About</a></li>
@@ -71,7 +71,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold mb-3">Resources</h4>
+            <h4 className="font-semibold mb-3 text-[#FEF547]">Resources</h4>
             <ul className="space-y-2 text-sm text-white/80">
               <li><a href="/blog" className="hover:underline">Blog</a></li>
               <li><a href="/gallery" className="hover:underline">Gallery</a></li>
@@ -82,7 +82,7 @@ export default function Footer() {
 
           {/* Contact + Newsletter */}
           <div>
-            <h4 className="font-semibold mb-3">Contact & Newsletter</h4>
+            <h4 className="font-semibold mb-3 text-[#FEF547]">Contact & Newsletter</h4>
             <div className="text-sm text-white/80">
               <span className="flex items-start gap-3 justify-start"><MapPinIcon className="text-sm w-10 h-10" /> 69, Akowonjo road, Combine plaza, Micom bus stop, Egbeda, Lagos.</span>
               <div className="flex items-start gap-3 justify-start"><PhoneIcon className="text-sm w-8 h-8" />0803 678 9605, 0802 312 4449, 0802 329 4261, 0802 336 6082.</div>
