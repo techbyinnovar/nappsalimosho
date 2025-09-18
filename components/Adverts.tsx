@@ -16,7 +16,7 @@ const ads = [
 export default function Adverts() {
     return (
         <div className="container mx-auto py-20 px-6 md:px-24 bg-[#EDFBEE] mb-0">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-18">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end items-start gap-4 md:mb-18 mb-8">
                 <div>
                     <h2 className="text-2xl md:text-5xl font-medium mb-2 text-green-800">Advertisement</h2>
                     {/* <p className="text-gray-600 text-xl mx-auto">Follow up on our latest activities and trends.</p> */}
@@ -27,7 +27,7 @@ export default function Adverts() {
                 </button>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-24 items-start justify-between">
+            <div className="flex flex-col md:flex-row md:gap-24 gap-10 items-start justify-between">
                 <div className="md:w-[30%]">
                     <p className="font-normal text-3xl text-gray-800 mb-12">Follow us for latest updates from various schools. Let’s help you reach a wider audience.</p>
                     <button className="bg-green-700 text-white px-6 py-3 rounded-lg shadow hover:bg-green-800 cursor-pointer">
@@ -35,7 +35,7 @@ export default function Adverts() {
                     </button>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 md:w-[70%]">
+                <div className="grid md:grid-cols-3 grid-cols-2 gap-6 md:w-[70%]">
                     {ads.map((ad) => (
                     <div
                         key={ad.alt}

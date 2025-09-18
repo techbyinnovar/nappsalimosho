@@ -25,7 +25,7 @@ const posts = [
 export default function Blog() {
     return (
         <section className="container mx-auto py-16 px-6 md:px-24">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-18">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end items-start gap-4 md:mb-18 mb-8">
                 <div>
                     <h2 className="text-2xl md:text-5xl font-medium mb-2 text-green-800">Our Blog</h2>
                     <p className="text-gray-600 text-xl mx-auto">Follow up on our latest activities.</p>

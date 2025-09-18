@@ -1,340 +1,381 @@
 import { useState } from "react";
 import ZoneCard from "./ZoneCard";
+import { zones } from "@/data/schools"; // use central data
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-const zones = [
-    {
-        id: 1,
-        schools: [
-        "GLAET SCHOOL",
-        "EVERGROWING SCH",
-        "DIVINE FAVOUR SCH",
-        "LIFTED HEADS SCH",
-        "MICHAEL AJIBADE MONTESSORI SCH",
-        "BIMFEM SCH",
-        "PHAROS MONTESSORI SCH",
-        "SIBAAM N/P SCH",
-        "HIGHRISE SCH",
-        "MERCYCHILLS SCH",
-        "PRECIOUS GLORY SCH",
-        "KAEMSEL SCH",
-        "MABETTS SCH",
-        "EDENA SCH",
-        "TOYLAND SCH",
-        "DEBBY TEE SCH",
-        "SIENA SCH",
-        "FETOAK SCH",
-        "KANMI SCH",
-        "NOBLE SCH",
-        "DATAMAS SCH",
-        "DOYIN PRIVATE SCH",
-        "KINGDOM BASE MONT.SCH",
-        "GREAT PLATINUM SCH",
-        "KEMAG SCH.",
-        "ST. DANIEL GROUP OF SCH",
-        "DALE CHILDREN SCH",
-        "SILVERPLUS ROYAL SCH",
-        "MIGHTY OAKS SCH",
-        "SUNRISE ACADEMIC",
-        "GRACEWORTH SCH",
-        "KINGDOM PEARL INT SCH.",
-        "TOYLAND SCH",
-        "CHALICE-VILLE SCH",
-        "JAY INTER SCH",
-        "BETHANY GENIUS SCH",
-        "GRACE BRAINS N/P",
-        "BRITE HILL SCH.",
-        "HONEY BEES SCH.",
-        "SOUNDFIELD SCH",
-        "MENOSA SCH.GREAT ZION",
-        "FUTURE HOPE MONT SCH",
-        "DIVINE APPLE MONT SCH",
-        "TANSOL TREASURES SCH",
-        "KIDDIES OASIS SCH.",
-        "GRACE BRAINS N/P SCH",
-        "SCOOBY DOO SCH",
-        "WISECHILL SCH",
-        "GREAT ZION SCH",
-        "ANCHOR MIRRORS SCH",
-        "JOHN IDEAL SCH",
-        "ROYALTY PATH SCH",
-        "SOUND HOPE SCH",
-        "SAMETI FAVOURED CHD SCH",
-        "WISDOM IMPACT INT SCH",
-        ],
-    },
-    { 
-  id: 2, 
-  schools: [
-    "DAVID MIC SCHOOL",
-    "LIZZY DAY SCHOOL",
-    "FUNKE EARLY LIGHT SCH",
-    "J - CHILDREN'S HOUSE SCHOOL",
-    "LEADWAY SCHOOL",
-    "BLOOMING GEM SCHOOL",
-    "FRONTLINER SCHOOL",
-    "VICOTAD SCHOOL",
-    "AKBRO SPRINGS SCHOOL",
-    "SOM-DEBIS SCHOOL",
-    "YOUNG STARS SCHOOL",
-    "AMIABLE PREP SCHOOL",
-    "ST. ANTHONY N/P SCHOOL",
-    "NEW DAY MEDAL SCHOOL",
-    "VICMOB SCH",
-    "CEDARCREEK SCH.",
-    "IRET SCH.",
-    "ALPHA MARIE'S SCH.",
-    "T&Y SCH",
-    "MOTHERCARE MONT.SCH",
-    "SWEET ANGELS SCH",
-    "CRADLEHOME CHILDREN SCH",
-    "FUTURE MIRROR SCH",
-    "TIMBERFIELD SCH",
-    "SHAMSFIELD SCH",
-    "TOTS UP SCH",
-    "DUPEOLU SCH.",
-    "ABITAJ UNIQUE CHD N/P",
-    "PENTAVILLE SCH",
-    "DAILY TURNS SCH",
-    "GOD'S KNOWLEDGE SCH",
-    "SHALOM NEW BREED SCH.",
-    "BRILLIANT REFORMERS SCH",
-    "MISSION HEIGHTS SCH",
-    "SOUND GLOBAL N/P SCH",
-    "MASTER PRIDE SCH.",
-    "MARALLEN N/P SCH",
-    "MASTER GUIDE SCH",
-    "PACIFIC SCH"
-  ]
-},
-{ 
-  id: 3, 
-  schools: [
-    "RACY SCHOOL",
-    "LESLEY FOUNDATION SCHOOL",
-    "LORA PRAISE",
-    "BUFETOLA SCHOOL",
-    "EBUN HERITAGE SCH.",
-    "COMBOLA SCH.",
-    "ROSEBUD SCH.",
-    "ELYON SCH.",
-    "SOLBETH SCH",
-    "ANSWERBANK",
-    "STADEM SCH.",
-    "FEM PAUL SCH.",
-    "ECHELON SCH",
-    "KUNLAP SCH",
-    "REMMLAK N/P SCH.",
-    "SWAYVILLE N/P SCH",
-    "FIRST ACTI-VA COLLEGE",
-    "DE PRISTINE SCH",
-    "EDEN LILIES SCH",
-    "ALL JOY MONT SCH.",
-    "GRACELAND SCH.",
-    "REMADE SCH.",
-    "DE-STAGES LINK N/P",
-    "CARDINAL SCH.",
-    "CAROMOS SCHOOL",
-    "STEDIA DIVINE SCH",
-    "PROMISELAND N/P SCH",
-    "HANNIEL SCH",
-    "SOLID OAK SCH.",
-    "DIVINITY SCH",
-    "BLOOM ORCHID SCH",
-    "LIVING SEED SCH",
-    "AUNTY MAY N/P SCH",
-    "TOP DESTINY CHILD SCH",
-    "CORNERSTONES SCH.",
-    "ALPHA REHOBOTH SCH."
-  ]
-},
-{ 
-  id: 4, 
-  schools: [
-    "WISDOM SPRING SCHOOL",
-    "DEBBYTEE SCHOOL",
-    "HENCHRIS SCHOOL",
-    "GLORY ACCESS SCHOOL",
-    "EL -CRYSTAL SCHOOL",
-    "BIG HEART SCH",
-    "OASIS OF GOSHEN",
-    "TOMBRAM SCH.",
-    "DAISY'S SCH",
-    "DOUBLE GRACE SCH.",
-    "HERALD SCH.",
-    "ANCHOR WORLD LIGHT SCH",
-    "ABIOLU SCH",
-    "WILL B SCH",
-    "JEMFAS SCH.",
-    "MATILDA SCH",
-    "AUTHOR'S CHILDREN SCH",
-    "FATWINS SCH",
-    "ROYAL PRIESTHOOD SCH",
-    "TOLUWA MONT SCH",
-    "CEDAR HEIGHTS SCH",
-    "THE VINE'S WILL SCH.",
-    "ELITE CROP SCH",
-    "BLESSED AVE MARIA SCH",
-    "SEED CHILD SCH",
-    "ST SAVIOURS SCH",
-    "GOLDSCHOLARS MODEL SCH",
-    "MARVEL FOUNDATION SCH",
-    "ANCHOR WORLD LIGHT SCH",
-    "YEMSOL PRIVATE SCH",
-    "PREMIER FOUNTAIN SCH",
-    "VISION MONT. SCH",
-    "HOPEFUL SCHOOL",
-    "FAMOUS LAND SCH",
-    "GLORIOUS TENDER AGE SCH",
-    "XFLODEL SCH",
-    "MALLAN SCH",
-    "JEDIDIAH SCH",
-    "BEFUNM SCH",
-    "BETHANY GENIUS SCH",
-    "DEO POTENTIAL SCH.",
-    "TTVM INT SCH.",
-    "ROYAL KATTY SCH",
-    "DEEJOY SCHOOL",
-    "MAC MONICC SCH.",
-    "MIMIJE SCHOOL",
-    "LARRY SCHOOL",
-    "PHENOMVILLE SCH",
-    "EMMAGRACE SCH",
-    "GRACE E N/P SCH",
-    "PRIMEWILL SCH",
-    "ESDAM PRIVATE SCH.",
-    "KENOLA SCH.",
-    "SOREK SCH.",
-    "PETTRAVILLE SCHOOL",
-    "VICTORY GATE COLLEGE",
-    "SIMMIC SCH",
-    "JODAS PROGRESSIVE SCH",
-    "NEWLIFE PRIVATE SCH",
-    "BLUE ROYAL SCH.",
-    "VICOLAS SCH.",
-    "LIVING SPRING COMP COL.",
-    "REJOICE KINSHIP SCH",
-    "KINTOBS SCH.",
-    "PEAK ROYAL SCH",
-    "CISTO ACADEMY SCH",
-    "TOFAM N/P SCH",
-    "TDDC SCH.",
-    "DE VESSELS SCH",
-    "TOYEM PRIVATE SCH"
-  ]
-},
-{ 
-  id: 5, 
-  schools: [
-    "TRIUMPHANT SCH",
-    "HOMELAND SCH.",
-    "HONOUR SCH",
-    "STEVE UNIC ACADEMY",
-    "BENESTHER SCH",
-    "ROYFAITH PLATINUM SCH",
-    "MOZAN SCH",
-    "RENNY CHILDREN SCH",
-    "MERRY KIDDIES PRIV. SCH",
-    "TOPSET VISION SCH.",
-    "JESLUV SCH",
-    "BEN-BOLMARKS SCH",
-    "BETINO ROYAL SCH.",
-    "ROSEVILLE SCHOOLS",
-    "OCEANVIEW INT'L SCH",
-    "WINNING GATE SCH.",
-    "M&M SCH",
-    "SAPPHIRE STONES SCH",
-    "GLOVINATH COMP. SCH",
-    "PLUMERIA SCH.",
-    "ALPHA-HEADSTONE EDU. CONSULT.",
-    "MOROMOKE CHRIST LINK SCH",
-    "LIVING SEED SCH",
-    "ALL SENSES SCH.",
-    "PRIESTHOOD CHILDREN SCH",
-    "DENSTER SCH.",
-    "ST LAWRENCE SCH.",
-    "SPRING ROYALE SCH"
-  ]
-},
-{ 
-  id: 6, 
-  schools: [
-    "FORT EXCEL INT SCH",
-    "DOSLAND SCH.",
-    "GREAT EDUBEST PRIV SCH",
-    "KING DAVID SCH"
-  ]
-},
-{ 
-  id: 7, 
-  schools: [
-    "LIFE CHANGERS SCHOOL",
-    "GREAT ECSTASY SCH",
-    "PEACE TOWER SCH",
-    "PADEK SCH.",
-    "WEMLEX SCH",
-    "DICDORA SCH.",
-    "RARE GIFT SCH",
-    "LAVEEZY SCH",
-    "DEBMAS SCH.",
-    "DEE CHEPSEN SCH",
-    "JUST RAY SCH",
-    "GREAT GRACE SCH.",
-    "TITA GLORIOUS SCH",
-    "DUPSON SCH",
-    "JOHNARK BONG SCH",
-    "FAPEP GRP OF SCH",
-    "TRUE VINE SCH",
-    "LIFE TIME INT SCH.",
-    "MIVIBLET SCH",
-    "DE ZEALOUS STANDARD COL.",
-    "DHARAFOT SCH",
-    "DARLING'S VILLE SCH",
-    "WORD TRANSFORMATION SCH",
-    "LAYO SCH",
-    "MILA SCHOOL.",
-    "PDSAK KIDDIES SCH",
-    "FIGAT SCH",
-    "ELIAM SCH.",
-    "GREAT AMAZING GLORY SCH",
-    "KIDDIES & EXCELLENCE BASE SCH",
-    "ALMIGHTY SCH.",
-    "KINGVILLE SCH.",
-    "MIVIBLET SCH",
-    "GREAT LEARNERS ACAD.",
-    "MARG - PHIL SCH"
-  ]
-}
-
-];
-
 export default function ZoneList() {
-    const [openZone, setOpenZone] = useState<number | null>(1);
+  const [openZone, setOpenZone] = useState<number | null>(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
-    return (
-        <div>
-            <h2 className="sr-only">Zones</h2>
-            <div className="flex items-center justify-between mb-6 w-full flex-col md:flex-row gap-4">
-                <h2 className="font-medium text-2xl text-gray-800">View All Zones</h2>
-                <div className="flex items-center md:justify-end">
-                    <input
-                        type="text"
-                        placeholder="Search zones..."
-                        className="border border-gray-300 rounded-lg px-4 py-2 w-[300px] focus:outline-none focus:ring-1 focus:ring-green-700"
-                    />
-                    <button className="flex items-center justify-between ml-2 bg-green-700 text-white px-4 py-2 w-1/3 rounded-lg shadow hover:bg-green-800 transition cursor-pointer">
-                        Search <MagnifyingGlassIcon className="w-5 h-5" />
-                    </button>
-                </div>
-            </div>
-            {zones.map((zone) => (
-                <ZoneCard
-                    key={zone.id}
-                    zone={zone}
-                    isOpen={openZone === zone.id}
-                    onToggle={() => setOpenZone(openZone === zone.id ? null : zone.id)}
-                />
-            ))}
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2 w-full flex-col md:flex-row gap-4">
+        <h2 className="font-medium text-2xl text-gray-800 mb-6">View All Zones</h2>
+        <div className="flex items-center justify-end mb-6">
+          <input
+            type="text"
+            placeholder="Search zones..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 w-[300px] focus:outline-none focus:ring-1 focus:ring-green-700"
+          />
+          <button className="flex items-center justify-between ml-2 bg-green-700 text-white px-4 py-2 w-1/3 rounded-lg shadow hover:bg-green-800 transition cursor-pointer">
+            Search <MagnifyingGlassIcon className="w-5 h-5" />
+          </button>
         </div>
-    );
+      </div>
+
+      {zones.map((zone) => (
+        <ZoneCard
+          key={zone.id}
+          zone={zone}
+          isOpen={openZone === zone.id}
+          onToggle={() => setOpenZone(openZone === zone.id ? null : zone.id)}
+        />
+      ))}
+    </div>
+  );
 }
+
+
+// import { useState } from "react";
+// import ZoneCard from "./ZoneCard";
+// import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
+// const zones = [
+//     {
+//         id: 1,
+//         schools: [
+//         "GLATET SCHOOL",
+//         "EVERGROWING SCH",
+//         "DIVINE FAVOUR SCH",
+//         "LIFTED HEADS SCH",
+//         "MICHAEL AJIBADE MONTESSORI SCH",
+//         "BIMFEM SCH",
+//         "PHAROS MONTESSORI SCH",
+//         "SIBAAM N/P SCH",
+//         "HIGHRISE SCH",
+//         "MERCYCHILLS SCH",
+//         "PRECIOUS GLORY SCH",
+//         "KAEMSEL SCH",
+//         "MABETTS SCH",
+//         "EDENA SCH",
+//         "TOYLAND SCH",
+//         "DEBBY TEE SCH",
+//         "SIENA SCH",
+//         "FETOAK SCH",
+//         "KANMI SCH",
+//         "NOBLE SCH",
+//         "DATAMAS SCH",
+//         "DOYIN PRIVATE SCH",
+//         "KINGDOM BASE MONT.SCH",
+//         "GREAT PLATINUM SCH",
+//         "KEMAG SCH.",
+//         "ST. DANIEL GROUP OF SCH",
+//         "DALE CHILDREN SCH",
+//         "SILVERPLUS ROYAL SCH",
+//         "MIGHTY OAKS SCH",
+//         "SUNRISE ACADEMIC",
+//         "GRACEWORTH SCH",
+//         "KINGDOM PEARL INT SCH.",
+//         "TOYLAND SCH",
+//         "CHALICE-VILLE SCH",
+//         "JAY INTER SCH",
+//         "BETHANY GENIUS SCH",
+//         "GRACE BRAINS N/P",
+//         "BRITE HILL SCH.",
+//         "HONEY BEES SCH.",
+//         "SOUNDFIELD SCH",
+//         "MENOSA SCH.GREAT ZION",
+//         "FUTURE HOPE MONT SCH",
+//         "DIVINE APPLE MONT SCH",
+//         "TANSOL TREASURES SCH",
+//         "KIDDIES OASIS SCH.",
+//         "GRACE BRAINS N/P SCH",
+//         "SCOOBY DOO SCH",
+//         "WISECHILL SCH",
+//         "GREAT ZION SCH",
+//         "ANCHOR MIRRORS SCH",
+//         "JOHN IDEAL SCH",
+//         "ROYALTY PATH SCH",
+//         "SOUND HOPE SCH",
+//         "SAMETI FAVOURED CHD SCH",
+//         "WISDOM IMPACT INT SCH",
+//         ],
+//     },
+//     { 
+//   id: 2, 
+//   schools: [
+//     "DAVID MIC SCHOOL",
+//     "LIZZY DAY SCHOOL",
+//     "FUNKE EARLY LIGHT SCH",
+//     "J - CHILDREN'S HOUSE SCHOOL",
+//     "LEADWAY SCHOOL",
+//     "BLOOMING GEM SCHOOL",
+//     "FRONTLINER SCHOOL",
+//     "VICOTAD SCHOOL",
+//     "AKBRO SPRINGS SCHOOL",
+//     "SOM-DEBIS SCHOOL",
+//     "YOUNG STARS SCHOOL",
+//     "AMIABLE PREP SCHOOL",
+//     "ST. ANTHONY N/P SCHOOL",
+//     "NEW DAY MEDAL SCHOOL",
+//     "VICMOB SCH",
+//     "CEDARCREEK SCH.",
+//     "IRET SCH.",
+//     "ALPHA MARIE'S SCH.",
+//     "T&Y SCH",
+//     "MOTHERCARE MONT.SCH",
+//     "SWEET ANGELS SCH",
+//     "CRADLEHOME CHILDREN SCH",
+//     "FUTURE MIRROR SCH",
+//     "TIMBERFIELD SCH",
+//     "SHAMSFIELD SCH",
+//     "TOTS UP SCH",
+//     "DUPEOLU SCH.",
+//     "ABITAJ UNIQUE CHD N/P",
+//     "PENTAVILLE SCH",
+//     "DAILY TURNS SCH",
+//     "GOD'S KNOWLEDGE SCH",
+//     "SHALOM NEW BREED SCH.",
+//     "BRILLIANT REFORMERS SCH",
+//     "MISSION HEIGHTS SCH",
+//     "SOUND GLOBAL N/P SCH",
+//     "MASTER PRIDE SCH.",
+//     "MARALLEN N/P SCH",
+//     "MASTER GUIDE SCH",
+//     "PACIFIC SCH"
+//   ]
+// },
+// { 
+//   id: 3, 
+//   schools: [
+//     "RACY SCHOOL",
+//     "LESLEY FOUNDATION SCHOOL",
+//     "LORA PRAISE",
+//     "BUFETOLA SCHOOL",
+//     "EBUN HERITAGE SCH.",
+//     "COMBOLA SCH.",
+//     "ROSEBUD SCH.",
+//     "ELYON SCH.",
+//     "SOLBETH SCH",
+//     "ANSWERBANK",
+//     "STADEM SCH.",
+//     "FEM PAUL SCH.",
+//     "ECHELON SCH",
+//     "KUNLAP SCH",
+//     "REMMLAK N/P SCH.",
+//     "SWAYVILLE N/P SCH",
+//     "FIRST ACTI-VA COLLEGE",
+//     "DE PRISTINE SCH",
+//     "EDEN LILIES SCH",
+//     "ALL JOY MONT SCH.",
+//     "GRACELAND SCH.",
+//     "REMADE SCH.",
+//     "DE-STAGES LINK N/P",
+//     "CARDINAL SCH.",
+//     "CAROMOS SCHOOL",
+//     "STEDIA DIVINE SCH",
+//     "PROMISELAND N/P SCH",
+//     "HANNIEL SCH",
+//     "SOLID OAK SCH.",
+//     "DIVINITY SCH",
+//     "BLOOM ORCHID SCH",
+//     "LIVING SEED SCH",
+//     "AUNTY MAY N/P SCH",
+//     "TOP DESTINY CHILD SCH",
+//     "CORNERSTONES SCH.",
+//     "ALPHA REHOBOTH SCH."
+//   ]
+// },
+// { 
+//   id: 4, 
+//   schools: [
+//     "WISDOM SPRING SCHOOL",
+//     "DEBBYTEE SCHOOL",
+//     "HENCHRIS SCHOOL",
+//     "GLORY ACCESS SCHOOL",
+//     "EL -CRYSTAL SCHOOL",
+//     "BIG HEART SCH",
+//     "OASIS OF GOSHEN",
+//     "TOMBRAM SCH.",
+//     "DAISY'S SCH",
+//     "DOUBLE GRACE SCH.",
+//     "HERALD SCH.",
+//     "ANCHOR WORLD LIGHT SCH",
+//     "ABIOLU SCH",
+//     "WILL B SCH",
+//     "JEMFAS SCH.",
+//     "MATILDA SCH",
+//     "AUTHOR'S CHILDREN SCH",
+//     "FATWINS SCH",
+//     "ROYAL PRIESTHOOD SCH",
+//     "TOLUWA MONT SCH",
+//     "CEDAR HEIGHTS SCH",
+//     "THE VINE'S WILL SCH.",
+//     "ELITE CROP SCH",
+//     "BLESSED AVE MARIA SCH",
+//     "SEED CHILD SCH",
+//     "ST SAVIOURS SCH",
+//     "GOLDSCHOLARS MODEL SCH",
+//     "MARVEL FOUNDATION SCH",
+//     "ANCHOR WORLD LIGHT SCH",
+//     "YEMSOL PRIVATE SCH",
+//     "PREMIER FOUNTAIN SCH",
+//     "VISION MONT. SCH",
+//     "HOPEFUL SCHOOL",
+//     "FAMOUS LAND SCH",
+//     "GLORIOUS TENDER AGE SCH",
+//     "XFLODEL SCH",
+//     "MALLAN SCH",
+//     "JEDIDIAH SCH",
+//     "BEFUNM SCH",
+//     "BETHANY GENIUS SCH",
+//     "DEO POTENTIAL SCH.",
+//     "TTVM INT SCH.",
+//     "ROYAL KATTY SCH",
+//     "DEEJOY SCHOOL",
+//     "MAC MONICC SCH.",
+//     "MIMIJE SCHOOL",
+//     "LARRY SCHOOL",
+//     "PHENOMVILLE SCH",
+//     "EMMAGRACE SCH",
+//     "GRACE E N/P SCH",
+//     "PRIMEWILL SCH",
+//     "ESDAM PRIVATE SCH.",
+//     "KENOLA SCH.",
+//     "SOREK SCH.",
+//     "PETTRAVILLE SCHOOL",
+//     "VICTORY GATE COLLEGE",
+//     "SIMMIC SCH",
+//     "JODAS PROGRESSIVE SCH",
+//     "NEWLIFE PRIVATE SCH",
+//     "BLUE ROYAL SCH.",
+//     "VICOLAS SCH.",
+//     "LIVING SPRING COMP COL.",
+//     "REJOICE KINSHIP SCH",
+//     "KINTOBS SCH.",
+//     "PEAK ROYAL SCH",
+//     "CISTO ACADEMY SCH",
+//     "TOFAM N/P SCH",
+//     "TDDC SCH.",
+//     "DE VESSELS SCH",
+//     "TOYEM PRIVATE SCH"
+//   ]
+// },
+// { 
+//   id: 5, 
+//   schools: [
+//     "TRIUMPHANT SCH",
+//     "HOMELAND SCH.",
+//     "HONOUR SCH",
+//     "STEVE UNIC ACADEMY",
+//     "BENESTHER SCH",
+//     "ROYFAITH PLATINUM SCH",
+//     "MOZAN SCH",
+//     "RENNY CHILDREN SCH",
+//     "MERRY KIDDIES PRIV. SCH",
+//     "TOPSET VISION SCH.",
+//     "JESLUV SCH",
+//     "BEN-BOLMARKS SCH",
+//     "BETINO ROYAL SCH.",
+//     "ROSEVILLE SCHOOLS",
+//     "OCEANVIEW INT'L SCH",
+//     "WINNING GATE SCH.",
+//     "M&M SCH",
+//     "SAPPHIRE STONES SCH",
+//     "GLOVINATH COMP. SCH",
+//     "PLUMERIA SCH.",
+//     "ALPHA-HEADSTONE EDU. CONSULT.",
+//     "MOROMOKE CHRIST LINK SCH",
+//     "LIVING SEED SCH",
+//     "ALL SENSES SCH.",
+//     "PRIESTHOOD CHILDREN SCH",
+//     "DENSTER SCH.",
+//     "ST LAWRENCE SCH.",
+//     "SPRING ROYALE SCH"
+//   ]
+// },
+// { 
+//   id: 6, 
+//   schools: [
+//     "FORT EXCEL INT SCH",
+//     "DOSLAND SCH.",
+//     "GREAT EDUBEST PRIV SCH",
+//     "KING DAVID SCH"
+//   ]
+// },
+// { 
+//   id: 7, 
+//   schools: [
+//     "LIFE CHANGERS SCHOOL",
+//     "GREAT ECSTASY SCH",
+//     "PEACE TOWER SCH",
+//     "PADEK SCH.",
+//     "WEMLEX SCH",
+//     "DICDORA SCH.",
+//     "RARE GIFT SCH",
+//     "LAVEEZY SCH",
+//     "DEBMAS SCH.",
+//     "DEE CHEPSEN SCH",
+//     "JUST RAY SCH",
+//     "GREAT GRACE SCH.",
+//     "TITA GLORIOUS SCH",
+//     "DUPSON SCH",
+//     "JOHNARK BONG SCH",
+//     "FAPEP GRP OF SCH",
+//     "TRUE VINE SCH",
+//     "LIFE TIME INT SCH.",
+//     "MIVIBLET SCH",
+//     "DE ZEALOUS STANDARD COL.",
+//     "DHARAFOT SCH",
+//     "DARLING'S VILLE SCH",
+//     "WORD TRANSFORMATION SCH",
+//     "LAYO SCH",
+//     "MILA SCHOOL.",
+//     "PDSAK KIDDIES SCH",
+//     "FIGAT SCH",
+//     "ELIAM SCH.",
+//     "GREAT AMAZING GLORY SCH",
+//     "KIDDIES & EXCELLENCE BASE SCH",
+//     "ALMIGHTY SCH.",
+//     "KINGVILLE SCH.",
+//     "MIVIBLET SCH",
+//     "GREAT LEARNERS ACAD.",
+//     "MARG - PHIL SCH"
+//   ]
+// }
+
+// ];
+
+// export default function ZoneList() {
+//   const [openZone, setOpenZone] = useState<number | null>(1);
+
+//   return (
+//     <div>
+//       <h2 className="sr-only">Zones</h2>
+//       <div className="flex items-center justify-between mb-6 w-full flex-col md:flex-row gap-4">
+//         <h2 className="font-medium text-2xl text-gray-800">View All Zones</h2>
+//         <div className="flex items-center md:justify-end">
+//           <input
+//             type="text"
+//             placeholder="Search zones..."
+//             className="border border-gray-300 rounded-lg px-4 py-2 w-[300px] focus:outline-none focus:ring-1 focus:ring-green-700"
+//           />
+//           <button className="flex items-center justify-between ml-2 bg-green-700 text-white px-4 py-2 w-1/3 rounded-lg shadow hover:bg-green-800 transition cursor-pointer">
+//             Search <MagnifyingGlassIcon className="w-5 h-5" />
+//           </button>
+//         </div>
+//       </div>
+//       {zones.map((zone) => (
+//         <ZoneCard
+//           key={zone.id}
+//           zone={zone}
+//           isOpen={openZone === zone.id}
+//           onToggle={() => setOpenZone(openZone === zone.id ? null : zone.id)}
+//         />
+//       ))}
+//     </div>
+//   );
+// }
+

@@ -59,7 +59,7 @@ export default function WhoWeAre() {
             {SECTIONS.map((s, idx) => (
             <article
                 key={s.title}
-                className={`flex flex-col md:flex-row items-center gap-24 ${
+                className={`flex flex-col md:flex-row items-center md:gap-24 gap-8 ${
                 idx % 2 === 1 ? "md:flex-row-reverse" : ""
                 }`}
             >
@@ -75,10 +75,10 @@ export default function WhoWeAre() {
                 </div>
 
                 <div className="md:w-1/2 w-full">
-                <h3 className="text-lg md:text-4xl font-normal text-gray-800 mb-4">
-                    {s.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed text-lg">{s.desc}</p>
+                  <h3 className="text-2xl md:text-4xl font-normal text-gray-800 mb-4">
+                      {s.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed text-lg">{s.desc}</p>
                 </div>
             </article>
             ))}

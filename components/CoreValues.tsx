@@ -22,7 +22,7 @@ export default function CoreValues() {
                 <h2 className="text-2xl md:text-5xl font-medium text-center mb-2 text-green-800">Our Core Values</h2>
                 <p className="text-center text-gray-600 text-xl max-w-3xl mx-auto mb-18">What we do that makes us stand out.</p>
             </div>
-            <div className="grid md:grid-cols-3 gap-6 px-24">
+            <div className="grid md:grid-cols-3 gap-6 md:px-24">
             {values.map((val) => (
                 <div
                 key={val.title}

@@ -1,6 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import logo from "../public/images/NPSlogo.png";
+import { MapPinIcon } from "@heroicons/react/24/solid";
+import { PhoneIcon } from "@heroicons/react/24/solid";
+import { EnvelopeIcon } from "@heroicons/react/24/solid";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -29,14 +35,17 @@ export default function Footer() {
         {/* Brand */}
         <div className="md:col-span-3 col-span-1">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white font-bold">N</div>
-            <div>
-              <div className="font-semibold text-lg">NAPPS Alimosho</div>
-              <div className="text-sm text-white/80">Promoting excellence in private education</div>
-            </div>
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2">
+                <Image src={logo} alt="logo" width={80} height={80} />
+                <div className="flex flex-col">
+                    <p className="text-white font-bold text-2xl mb-0">NAPPS </p>
+                    <p className="text-yellow-500 text-sm uppercase">Alimosho Chapter</p>
+                </div>
+            </Link>
           </div>
 
-          <p className="text-sm text-white/70 mt-4 w-[60%]">
+          <p className="text-sm md:text-lg text-white/70 mt-4 md:mt-2 md:w-[65%]">
             We support private school proprietors with training, advocacy and resources — and help parents find trusted schools.
           </p>
 
@@ -47,7 +56,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-">
+        <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3">
           {/* Quick Links */}
           <div>
             <h4 className="font-semibold mb-3">Quick Links</h4>
@@ -75,9 +84,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-3">Contact & Newsletter</h4>
             <div className="text-sm text-white/80">
-              <div>📍 69, Akowonjo road, Combine plaza, Micom bus stop, Egbeda, Lagos.</div>
-              <div>📞 0803 678 9605, 0802 312 4449, 0802 329 4261, 0802 336 6082.</div>
-              <div>✉️ nappsalimosho1@gmail.com</div>
+              <span className="flex items-start gap-3 justify-start"><MapPinIcon className="text-sm w-10 h-10" /> 69, Akowonjo road, Combine plaza, Micom bus stop, Egbeda, Lagos.</span>
+              <div className="flex items-start gap-3 justify-start"><PhoneIcon className="text-sm w-8 h-8" />0803 678 9605, 0802 312 4449, 0802 329 4261, 0802 336 6082.</div>
+              <div className="flex items-start gap-3 justify-start"><EnvelopeIcon className="text-sm w-4 h-4" /> nappsalimosho1@gmail.com</div>
             </div>
 
             <form onSubmit={handleSubscribe} className="mt-4">
@@ -118,7 +127,7 @@ export default function Footer() {
 /* Tiny Social Icon wrapper */
 function SocialIcon({ ariaLabel, href, svgPath }: { ariaLabel: string; href: string; svgPath: React.ReactNode; }) {
   return (
-    <a aria-label={ariaLabel} href={href} className="p-2 rounded-md bg-white/8 hover:bg-white/12">
+    <a aria-label={ariaLabel} href={href} className="p-2 flex items-center justify-center rounded-md bg-white/8 hover:bg-white/12">
       <span className="sr-only">{ariaLabel}</span>
       <div className="w-6 h-6 text-white">{svgPath}</div>
     </a>
