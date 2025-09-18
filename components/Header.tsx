@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../public/images/NPSlogo.png";
+import RegisterSchoolModal from "./RegisterSchoolModal";
 
 export default function Header() {
     const [open, setOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <header className="bg-white shadow sticky top-0 z-50">
@@ -33,10 +35,18 @@ export default function Header() {
 
             {/* CTA */}
             <div className="hidden md:block">
-            <button className="bg-green-700 text-white px-4 py-3 rounded-lg hover:bg-green-800 cursor-pointer">
+            <button 
+                onClick={() => setIsModalOpen(true)} 
+                className="bg-green-700 text-white px-4 py-3 rounded-lg hover:bg-green-800 cursor-pointer"
+            >
                 Register Your School
             </button>
             </div>
+            {/* Modal */}
+            <RegisterSchoolModal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+            />
 
             {/* Mobile Menu Button */}
             <button
