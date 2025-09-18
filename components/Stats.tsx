@@ -21,7 +21,7 @@ export default function Stats() {
             <div className="border-r border-dashed">
                 <LiaAwardSolid className="w-14 h-14 mx-auto mb-4 text-white" />
                 <div>
-                    <h2 className="text-[#FEF200] text-6xl font-bold">12+</h2>
+                    <h2 className="text-[#FEF200] text-6xl font-bold">20+</h2>
                     <p className="text-2xl">Years of Service</p>
                 </div>
             </div>
