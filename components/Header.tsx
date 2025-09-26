@@ -34,13 +34,14 @@ export default function Header() {
             </nav>
 
             {/* CTA */}
-            <div className="hidden md:block">
-            <button 
-                onClick={() => setIsModalOpen(true)} 
-                className="bg-green-700 text-white px-4 py-3 rounded-lg hover:bg-green-800 cursor-pointer"
-            >
-                Register Your School
-            </button>
+            <div className="hidden md:flex gap-8">
+                <button className="text-lg font-semibold text-green-700 hover:underline cursor-pointer">Login</button>
+                <button 
+                    onClick={() => setIsModalOpen(true)} 
+                    className="bg-green-700 text-white px-4 py-3 rounded-lg hover:bg-green-800 cursor-pointer"
+                >
+                    Register Your School
+                </button>
             </div>
             {/* Modal */}
             <RegisterSchoolModal 

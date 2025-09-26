@@ -8,6 +8,7 @@ interface FormData {
   schoolName: string;
   schoolAddress: string;
   portfolio: string;
+  zone: string;
 }
 
 interface RegisterSchoolModalProps {
@@ -23,7 +24,8 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
     phone: '',
     schoolName: '',
     schoolAddress: '',
-    portfolio: 'School Proprietor'
+    portfolio: 'School Proprietor',
+    zone: 'Zone 1',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -65,6 +67,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
+                {/* firstname */}
                 <div>
                   <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
                     First Name
@@ -81,6 +84,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
                   />
                 </div>
                 
+                {/* email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
@@ -96,7 +100,8 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
                     required
                   />
                 </div>
-                
+
+                {/* sch name */}
                 <div>
                   <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700 mb-1">
                     School Name
@@ -113,6 +118,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
                   />
                 </div>
                 
+                {/* title/portfolio */}
                 <div>
                   <label htmlFor="portfolio" className="block text-sm font-medium text-gray-700 mb-1">
                     Portfolio/Title
@@ -130,9 +136,11 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
                     <option value="Other">Other</option>
                   </select>
                 </div>
+
               </div>
               
               <div className="space-y-4">
+                {/* lastname */}
                 <div>
                   <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
                     Last Name
@@ -149,6 +157,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
                   />
                 </div>
                 
+                {/* phone */}
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                     Phone Number
@@ -164,24 +173,49 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({ isOpen, onClo
                     required
                   />
                 </div>
-                
+
+                {/* sch address */}
                 <div>
                   <label htmlFor="schoolAddress" className="block text-sm font-medium text-gray-700 mb-1">
                     School Address
                   </label>
-                  <textarea
+                  <input
+                    type="text"
                     id="schoolAddress"
                     name="schoolAddress"
                     value={formData.schoolAddress}
                     onChange={handleChange}
                     placeholder="Enter your school address"
-                    rows={3}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
                     required
-                  ></textarea>
+                  ></input>
                 </div>
+
+                {/* zone */}
+                <div>
+                  <label htmlFor="zone" className="block text-sm font-medium text-gray-700 mb-1">
+                    Zone
+                  </label>
+                  <select
+                    id="zone"
+                    name="zone"
+                    value={formData.zone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                  >
+                    <option value="Zone 1">Zone 1</option>
+                    <option value="Zone 2">Zone 2</option>
+                    <option value="Zone 3">Zone 3</option>
+                    <option value="Zone 4">Zone 4</option>
+                    <option value="Zone 5">Zone 5</option>
+                    <option value="Zone 6">Zone 6</option>
+                    <option value="Zone 7">Zone 7</option>
+                  </select>
+                </div>
+
               </div>
             </div>
+
             
             <div className="pt-4">
               <button

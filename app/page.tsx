@@ -7,6 +7,7 @@ import Testimonials from "@/components/Testimonials";
 import SchoolFinder from "@/components/SchoolFinder";
 import Blog from "@/components/Blog";
 import Adverts from "@/components/Adverts";
+import { trpc } from "@/src/utils/trpc";
 
 export default function Home() {
   return (
