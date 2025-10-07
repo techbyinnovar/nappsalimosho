@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "prisma:migrate": "prisma migrate dev --name init"
+    "prisma:migrate": "prisma migrate dev --name init",
+    "seed": "prisma db seed"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -40,6 +41,6 @@
     "typescript": "^5.9.2"
   },
   "prisma": {
-    "seed": "ts-node-esm prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts"
   }
 }

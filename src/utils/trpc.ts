@@ -1,6 +1,6 @@
 import { createTRPCReact } from "@trpc/react-query";
 import { httpBatchLink } from "@trpc/client";
-import SuperJSON from "superjson";
+import superjson from "superjson";
 import type { AppRouter } from "@/src/server/trpc/routers/_app";
 
 export const trpc = createTRPCReact<AppRouter>();
@@ -13,10 +13,11 @@ function getBaseUrl() {
 
 export function getTRPCClient() {
   return trpc.createClient({
-    transformer: SuperJSON, 
+    // transformer: superjson, // ✅ explicitly include transformer
     links: [
       httpBatchLink({
-        url: `${getBaseUrl()}/api/trpc`, // ✅ always resolve full URL on server
+        url: `${getBaseUrl()}/api/trpc`,
+        transformer: superjson, // ✅ required for TS type safety
       }),
     ],
   });

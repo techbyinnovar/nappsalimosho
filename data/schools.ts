@@ -1,3 +1,4 @@
+// data/schools.ts
 import { School, Zone } from '@/types/school';
 
 export const schools: School[] = [
