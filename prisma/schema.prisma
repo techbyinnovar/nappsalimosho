@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// prisma/schema.prisma
 
 datasource db {
   provider = "postgresql"
@@ -12,6 +8,7 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
 enum Role {
   ADMIN
   SCHOOL_OWNER
@@ -27,22 +24,34 @@ model User {
   role      Role     @default(SCHOOL_OWNER)
   createdAt DateTime @default(now())
 
-  schools   School[]
+  schools School[]
 }
 
 model School {
   id            Int      @id @default(autoincrement())
-  schoolName    String // display name for the school
+  schoolName    String
   schoolAddress String
-  portfolio     String
   zone          String
-  createdAt     DateTime @default(now())
+  portfolio     String
+  founded       Int? // optional
+  students      Int? // optional
+  staff         Int? // optional
+  tuitionRange  String? // optional
+  phone         String?
+  email         String?
+  website       String?
+  about         String? // optional
+  programs      String[] @default([]) // multi-select dropdown
+  facilities    String[] @default([]) // multi-select dropdown
+  hours         Json? // optional working hours
+  highlights    Json? // optional highlights or tags
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
-  
+  owner   User     @relation(fields: [ownerId], references: [id])
   members Member[]
   events  Event[]
+
+  createdAt DateTime @default(now())
 }
 
 model Member {
@@ -65,16 +74,15 @@ model Event {
 }
 
 model Admin {
-  id            String   @id @default(cuid())
-  name          String?
-  email         String   @unique
-  password      String   // hashed with bcrypt
-  emailVerified DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  sessions Session[]
-  accounts Account[]
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  password  String
+  role      String?   @default("ADMIN")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+  accounts  Account[]
 }
 
 model Session {
@@ -86,7 +94,7 @@ model Session {
 }
 
 model Account {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -98,7 +106,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              Admin    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              Admin   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
