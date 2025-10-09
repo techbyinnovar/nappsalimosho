@@ -80,7 +80,7 @@ export const schoolRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.session?.user?.id;
-      if (!userId) throw new Error("Unauthorized");
+      if (!userId) throw new Error("Unauthorized. Login first.");
 
       return prisma.school.create({
         data: {
