@@ -1,18 +1,16 @@
+// app/api/schools/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/src/server/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/lib/auth";
+import bcrypt from "bcryptjs";
 
-// 🟢 Create a new school
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const {
+      ownerFirstName,
+      ownerLastName,
+      ownerEmail,
+      ownerPhone,
+      ownerPassword,
       schoolName,
       schoolAddress,
       portfolio,
@@ -30,15 +28,14 @@ export async function POST(req: Request) {
       hours,
     } = await req.json();
 
-    // ✅ Validate required fields
-    if (!schoolName || !schoolAddress || !portfolio || !zone) {
-      return NextResponse.json(
-        { error: "Required fields are missing" },
-        { status: 400 }
-      );
+    if (!schoolName || !schoolAddress || !portfolio || !zone || !ownerEmail || !ownerPassword) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // ✅ Create school
+    // ✅ Hash password
+    const hashedPassword = await bcrypt.hash(ownerPassword, 10);
+
+    // ✅ Create both user and school at once
     const school = await prisma.school.create({
       data: {
         schoolName,
@@ -56,8 +53,19 @@ export async function POST(req: Request) {
         programs: Array.isArray(programs) ? programs : [],
         facilities: Array.isArray(facilities) ? facilities : [],
         hours: hours ? JSON.parse(JSON.stringify(hours)) : null,
-        owner: { connect: { id: Number(session.user.id) } },
+        status: "PENDING",
+        owner: {
+          create: {
+            firstName: ownerFirstName,
+            lastName: ownerLastName,
+            email: ownerEmail,
+            phone: ownerPhone,
+            password: hashedPassword,
+            role: "SCHOOL_OWNER",
+          },
+        },
       },
+      include: { owner: true },
     });
 
     return NextResponse.json({ success: true, school }, { status: 201 });
@@ -70,64 +78,3 @@ export async function POST(req: Request) {
   }
 }
 
-// 🟣 Fetch schools (admin/owner view)
-export async function GET() {
-  try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // If user is ADMIN, return all schools
-    // If SCHOOL_OWNER, return only their schools
-    const user = await prisma.user.findUnique({
-      where: { id: Number(session.user.id) },
-      select: { role: true },
-    });
-
-    const isAdmin = user?.role === "ADMIN";
-
-    const schools = await prisma.school.findMany({
-      where: isAdmin
-        ? {} // Admin sees all
-        : { ownerId: Number(session.user.id) }, // Owner sees their own
-      select: {
-        id: true,
-        schoolName: true,
-        schoolAddress: true,
-        portfolio: true,
-        zone: true,
-        email: true,
-        phone: true,
-        website: true,
-        founded: true,
-        students: true,
-        staff: true,
-        tuitionRange: true,
-        about: true,
-        programs: true,
-        facilities: true,
-        hours: true,
-        createdAt: true,
-        owner: {
-          select: {
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true,
-          },
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    return NextResponse.json(schools, { status: 200 });
-  } catch (error) {
-    console.error("❌ Error fetching schools:", error);
-    return NextResponse.json(
-      { success: false, message: "Error fetching schools" },
-      { status: 500 }
-    );
-  }
-}

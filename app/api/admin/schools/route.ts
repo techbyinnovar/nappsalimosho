@@ -1,4 +1,3 @@
-// app/api/admin/schools/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/src/server/prisma";
 
@@ -11,17 +10,18 @@ export async function GET() {
             firstName: true,
             lastName: true,
             email: true,
+            phone: true,
           },
         },
       },
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json(schools);
+    return NextResponse.json(schools, { status: 200 });
   } catch (error) {
-    console.error("Error fetching schools:", error);
+    console.error("❌ Error fetching schools:", error);
     return NextResponse.json(
-      { error: "Failed to load schools" },
+      { success: false, message: "Error fetching schools" },
       { status: 500 }
     );
   }

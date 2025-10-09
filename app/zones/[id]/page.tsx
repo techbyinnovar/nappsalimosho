@@ -1,3 +1,4 @@
+// app/zones/[id]/page.tsx
 import Image from "next/image";
 import AboutSchool from "@/components/AboutSchool";
 import ContactInfo from "@/components/ContactInfo";
