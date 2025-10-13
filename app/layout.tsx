@@ -1,8 +1,12 @@
+// "use client"
 import type { Metadata } from "next";
 import { Afacad } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SessionProvider } from "next-auth/react";
+import Providers from "./Provider";
+import { TRPCProvider } from "./providers";
 
 const afacad = Afacad({
   variable: "--font-afacad",
@@ -28,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${afacad.variable} antialiased bg-white`}
       >
+      <Providers>
         <Header />
-        {children}
+          {children}
         <Footer />
+      </Providers>
       </body>
     </html>
   );

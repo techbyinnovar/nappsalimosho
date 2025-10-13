@@ -1,27 +1,30 @@
 import Image from "next/image";
 import hero2 from "../public/images/hero2.png";
-import { School } from "@/types/school";
 
-export default function HeroSchool({ name, staff, students, description } : School) {
+type HeroSchoolProps = {
+    schoolName: string;
+    staff?: number | null;
+    students?: number | null;
+    about?: string | null;
+};
+
+export default function HeroSchool({ schoolName, staff, students, about } : HeroSchoolProps) {
     return (
         <section className="lg:flex items-center justify-between gap-10 md:pl-24 pl-6 bg-[#EDFBEE] py-10">
             <div className="flex-1">
-                <span className="inline-block bg-green-100 text-green-700 px-4 py-1 rounded-full text-sm font-medium mb-4">
-                NAPPS Member
-                </span>
-                <h1 className="text-3xl md:text-6xl font-bold mb-3">{name}</h1>
+                <h1 className="text-3xl md:text-6xl font-bold mb-3">{schoolName}</h1>
                 <p className="text-gray-600 mb-4">
-                {description}
+                {about}
                 </p>
 
                 <div className="flex items-center gap-6 mb-6">
                     <div className="flex items-center gap-2 text-gray-700">
                         <span>👩‍🎓</span>
-                        <p>{students} Students</p>
+                        <p>{students ?? 0} Students</p>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
                         <span>👩‍🏫</span>
-                        <p>{staff} Staff Members</p>
+                        <p>{staff ?? 0} Staff Members</p>
                     </div>
                 </div>
 
@@ -38,7 +41,7 @@ export default function HeroSchool({ name, staff, students, description } : Scho
             <div className="flex-1 mt-8 lg:mt-0">
                 <Image
                 src={hero2}
-                alt="Glatet School Students"
+                alt={`${schoolName} Students`}
                 width={600}
                 height={400}
                 className="rounded-xl h-[400px] w-auto"

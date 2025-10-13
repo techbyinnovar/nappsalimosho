@@ -1,0 +1,127 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  SCHOOL_OWNER
+}
+
+enum SchoolStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String   @unique
+  phone     String?
+  password  String
+  role      String   @default("SCHOOL_OWNER")
+  schools   School[]
+  createdAt DateTime @default(now())
+}
+
+model School {
+  id            Int      @id @default(autoincrement())
+  schoolName    String
+  schoolAddress String
+  slug          String?  @unique
+  zone          Int?
+  portfolio     String
+  founded       Int? // optional
+  students      Int? // optional
+  staff         Int? // optional
+  tuitionRange  String? // optional
+  phone         String?
+  email         String?
+  website       String?
+  about         String? // optional
+  programs      String[] @default([]) // multi-select dropdown
+  facilities    String[] @default([]) // multi-select dropdown
+  hours         Json? // optional working hours
+  highlights    Json? // optional highlights or tags
+
+  ownerId Int
+  owner   User     @relation(fields: [ownerId], references: [id])
+  members Member[]
+  events  Event[]
+
+  status    SchoolStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+}
+
+model Member {
+  id       Int     @id @default(autoincrement())
+  name     String?
+  role     String
+  email    String  @unique
+  schoolId Int?
+  school   School? @relation(fields: [schoolId], references: [id])
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  date        DateTime
+
+  schoolId Int
+  school   School @relation(fields: [schoolId], references: [id])
+}
+
+model Admin {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  password  String
+  role      String?   @default("ADMIN")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+  accounts  Account[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         Admin    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              Admin   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

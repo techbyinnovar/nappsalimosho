@@ -1,3 +1,4 @@
+// app/zones/page.tsx
 "use client";
 
 import HeroZones from '@/components/HeroZones'

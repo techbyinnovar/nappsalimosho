@@ -17,8 +17,8 @@ export default function Executives() {
     const members = [
         { name: "Prince Mike Adesayo Adewoye", role: "Chairman", img: mike },
         { name: "Mrs Aliu Esther Shola", role: "Vice Chairman", img: esther },
-        { name: "Pst. Babajide Sunday Olusola", role: "General Secretary", img: alfred },
-        { name: "Mr. Igho Alfred Otomewo", role: "Asst. General Secretary", img: sunday },
+        { name: "Pst. Babajide Sunday Olusola", role: "General Secretary", img: sunday },
+        { name: "Mr. Igho Alfred Otomewo", role: "Asst. General Secretary", img: alfred },
         { name: "Mrs. Falohun Oludolapo", role: "Treasurer", img: falohun },
         { name: "(Dr.) Adedoyin Segun Samson", role: "Financial Secretary", img: segun },
         { name: "Aloma Doreen Ugochi", role: "Financial Secretary 2", img: aloma },

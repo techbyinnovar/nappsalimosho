@@ -1,6 +1,6 @@
-import { School } from "@/types/school";
+import { SafeSchool } from "@/types/school";
 
-export default function QuickStats({ school }: { school: School }) {
+export default function QuickStats({ school }: { school: SafeSchool }) {
   return (
     <div className="bg-white shadow rounded-xl p-6">
       <h3 className="text-lg font-semibold mb-4">Quick Stats</h3>
