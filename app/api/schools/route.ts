@@ -1,6 +1,7 @@
 // app/api/schools/route.ts
 import { NextResponse } from "next/server";
 import { prisma } from "@/src/server/prisma";
+import { generateSlug } from "@/src/utils/generateSlug";
 import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
@@ -35,9 +36,12 @@ export async function POST(req: Request) {
     // ✅ Hash password
     const hashedPassword = await bcrypt.hash(ownerPassword, 10);
 
+    const slug = generateSlug(schoolName);
+
     // ✅ Create both user and school at once
     const school = await prisma.school.create({
       data: {
+        slug,
         schoolName,
         schoolAddress,
         portfolio,

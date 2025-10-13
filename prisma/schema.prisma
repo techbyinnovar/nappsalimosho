@@ -27,8 +27,8 @@ model User {
   email     String   @unique
   phone     String?
   password  String
-  role      String    @default("SCHOOL_OWNER")   
-  schools   School[]  
+  role      String   @default("SCHOOL_OWNER")
+  schools   School[]
   createdAt DateTime @default(now())
 }
 
@@ -36,7 +36,8 @@ model School {
   id            Int      @id @default(autoincrement())
   schoolName    String
   schoolAddress String
-  zone          String
+  slug          String?  @unique
+  zone          Int?
   portfolio     String
   founded       Int? // optional
   students      Int? // optional

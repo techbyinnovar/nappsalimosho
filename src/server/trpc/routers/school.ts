@@ -64,7 +64,7 @@ export const schoolRouter = router({
         schoolName: z.string(),
         schoolAddress: z.string(),
         portfolio: z.string(),
-        zone: z.string(),
+        zone: z.number(),
         email: z.string().optional(),
         phone: z.string().optional(),
         website: z.string().optional(),
