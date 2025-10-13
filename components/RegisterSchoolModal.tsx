@@ -14,7 +14,7 @@ interface FormData {
   schoolName: string;
   schoolAddress: string;
   portfolio: string;
-  zone: string;
+  zone: number;
   founded?: string | null;
   students?: string | null;
   staff?: string | null;
@@ -59,7 +59,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
     schoolName: "",
     schoolAddress: "",
     portfolio: "School Proprietor",
-    zone: "Zone 1",
+    zone: 1,
     founded: "",
     students: "",
     staff: "",
