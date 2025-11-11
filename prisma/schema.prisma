@@ -52,10 +52,12 @@ model School {
   hours         Json? // optional working hours
   highlights    Json? // optional highlights or tags
 
-  ownerId Int
-  owner   User     @relation(fields: [ownerId], references: [id])
-  members Member[]
-  events  Event[]
+  logoUrl     String?
+  galleryUrls String[] @default([])
+  ownerId     Int
+  owner       User     @relation(fields: [ownerId], references: [id])
+  members     Member[]
+  events      Event[]
 
   status    SchoolStatus @default(PENDING)
   createdAt DateTime     @default(now())
