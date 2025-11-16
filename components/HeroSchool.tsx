@@ -6,11 +6,12 @@ type HeroSchoolProps = {
     staff?: number | null;
     students?: number | null;
     about?: string | null;
+    logoUrl?: string | null;
 };
 
-export default function HeroSchool({ schoolName, staff, students, about } : HeroSchoolProps) {
+export default function HeroSchool({ schoolName, staff, students, about, logoUrl } : HeroSchoolProps) {
     return (
-        <section className="lg:flex items-center justify-between gap-10 md:pl-24 pl-6 bg-[#EDFBEE] py-10">
+        <section className="lg:flex items-center justify-between gap-10 md:px-24 pl-6 bg-[#EDFBEE] py-10">
             <div className="flex-1">
                 <h1 className="text-3xl md:text-6xl font-bold mb-3">{schoolName}</h1>
                 <p className="text-gray-600 mb-4">
@@ -40,7 +41,7 @@ export default function HeroSchool({ schoolName, staff, students, about } : Hero
 
             <div className="flex-1 mt-8 lg:mt-0">
                 <Image
-                src={hero2}
+                src={logoUrl || hero2}
                 alt={`${schoolName} Students`}
                 width={600}
                 height={400}

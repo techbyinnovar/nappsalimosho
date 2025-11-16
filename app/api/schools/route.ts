@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       data: {
         schoolName,
         schoolAddress,
-        // slug: generateSlug(schoolName),
+        slug: generateSlug(schoolName),
         zone: zone || null,
         portfolio,
         founded: founded ? parseInt(founded) : null,
