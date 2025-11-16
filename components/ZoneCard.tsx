@@ -7,14 +7,14 @@ interface ApiSchool {
   id: number;
   slug: string;
   schoolName: string;
-  zone: number | null;
+  zone: string | null;
   schoolAddress?: string | null;
   phone?: string | null;
   email?: string | null;
 }
 
 interface Zone {
-  id: number;
+  id: string;
   name: string;
   schools: ApiSchool[];
 }

@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import logo from '../public/images/logo.png';
+// import { School } from "@/types/school";
 
 type School = {
     id: string;

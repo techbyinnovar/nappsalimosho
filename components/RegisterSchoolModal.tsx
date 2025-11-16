@@ -15,7 +15,7 @@ interface FormData {
   schoolName: string;
   schoolAddress: string;
   portfolio: string;
-  zone: number;
+  zone: string;
   founded?: string | null;
   students?: string | null;
   staff?: string | null;
@@ -66,7 +66,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
     schoolName: "",
     schoolAddress: "",
     portfolio: "School Proprietor",
-    zone: 1,
+    zone: "Alimosho Central",
     founded: "",
     students: "",
     staff: "",
@@ -90,19 +90,25 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
       setFormData((prev) => ({
         ...prev,
         ...schoolToEdit,
-        ownerPassword: "",
+        ownerFirstName: prev.ownerFirstName,
+        ownerLastName: prev.ownerLastName,
+        ownerEmail: prev.ownerEmail,
+        ownerPhone: prev.ownerPhone,
+        ownerPassword: prev.ownerPassword,
       }));
     }
   }, [schoolToEdit]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name } = e.target;
-    const rawValue = e.target.value;
-    const value = name === "zone" ? Number(rawValue) : rawValue;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+) => {
+  const { name, value } = e.target;
+  const numericFields = ["founded", "students", "staff"];
+  setFormData((prev) => ({
+    ...prev,
+    [name]: numericFields.includes(name) ? (value === "" ? "" : Number(value)) : value,
+  }));
+};
 
   const handleFacilitySelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
@@ -218,9 +224,15 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
         <div className="p-6">
           <div className="flex justify-between items-start mb-3">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">Register Your School</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                {mode === "edit"
+                  ? "Edit School Details"
+                  : "Register Your School"}
+              </h2>
               <p className="text-gray-600 mb-6">
-                Fill out the form below to begin your membership journey.
+                {mode === "edit"
+                  ? "Update your school’s information below."
+                  : "Fill out the form below to begin your membership journey."}
               </p>
             </div>
             <button
@@ -234,90 +246,92 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* ======================= SCHOOL OWNER SECTION ======================= */}
-            <div className="border rounded-lg p-4 bg-green-50">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">School Owner Details</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="ownerFirstName" className="block text-sm font-medium text-gray-700 mb-1">
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="ownerFirstName"
-                    name="ownerFirstName"
-                    value={formData.ownerFirstName}
-                    onChange={handleChange}
-                    placeholder="Owner's first name"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    required
-                  />
-                </div>
+            {mode === "create" && (
+              <div className="border rounded-lg p-4 bg-green-50">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">School Owner Details</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="ownerFirstName" className="block text-sm font-medium text-gray-700 mb-1">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      id="ownerFirstName"
+                      name="ownerFirstName"
+                      value={formData.ownerFirstName}
+                      onChange={handleChange}
+                      placeholder="Owner's first name"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label htmlFor="ownerLastName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="ownerLastName"
-                    name="ownerLastName"
-                    value={formData.ownerLastName}
-                    onChange={handleChange}
-                    placeholder="Owner's last name"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    required
-                  />
-                </div>
+                  <div>
+                    <label htmlFor="ownerLastName" className="block text-sm font-medium text-gray-700 mb-1">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      id="ownerLastName"
+                      name="ownerLastName"
+                      value={formData.ownerLastName}
+                      onChange={handleChange}
+                      placeholder="Owner's last name"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label htmlFor="ownerEmail" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="ownerEmail"
-                    name="ownerEmail"
-                    value={formData.ownerEmail}
-                    onChange={handleChange}
-                    placeholder="Owner's email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    required
-                  />
-                </div>
+                  <div>
+                    <label htmlFor="ownerEmail" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="ownerEmail"
+                      name="ownerEmail"
+                      value={formData.ownerEmail}
+                      onChange={handleChange}
+                      placeholder="Owner's email"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label htmlFor="ownerPhone" className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone
-                  </label>
-                  <input
-                    type="tel"
-                    id="ownerPhone"
-                    name="ownerPhone"
-                    value={formData.ownerPhone}
-                    onChange={handleChange}
-                    placeholder="e.g. +234 901 234 5678"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    required
-                  />
-                </div>
+                  <div>
+                    <label htmlFor="ownerPhone" className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      id="ownerPhone"
+                      name="ownerPhone"
+                      value={formData.ownerPhone}
+                      onChange={handleChange}
+                      placeholder="e.g. +234 901 234 5678"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                      required
+                    />
+                  </div>
 
-                <div className="md:col-span-2">
-                  <label htmlFor="ownerPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="ownerPassword"
-                    name="ownerPassword"
-                    value={formData.ownerPassword}
-                    onChange={handleChange}
-                    placeholder="Create a password"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
-                    required={mode !== "edit"} // if editing, password not required
-                  />
+                  <div className="md:col-span-2">
+                    <label htmlFor="ownerPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      id="ownerPassword"
+                      name="ownerPassword"
+                      value={formData.ownerPassword}
+                      onChange={handleChange}
+                      placeholder="Create a password"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* ======================= SCHOOL DETAILS (existing form) ======================= */}
             <div className="grid md:grid-cols-2 gap-6">
@@ -380,7 +394,7 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
                   />
                 </div>
 
-                {/* Zone */}
+                {/* Zone field (string-based now) */}
                 <div>
                   <label htmlFor="zone" className="block text-sm font-medium text-gray-700 mb-1">
                     Zone
@@ -393,13 +407,13 @@ const RegisterSchoolModal: React.FC<RegisterSchoolModalProps> = ({
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-500"
                     required
                   >
-                    <option value={1}>Zone 1</option>
-                    <option value={2}>Zone 2</option>
-                    <option value={3}>Zone 3</option>
-                    <option value={4}>Zone 4</option>
-                    <option value={5}>Zone 5</option>
-                    <option value={6}>Zone 6</option>
-                    <option value={7}>Zone 7</option>
+                    <option value="Alimosho Central">Alimosho Central</option>
+                    <option value="Agbado/Oke-Odo">Agbado/Oke-Odo</option>
+                    <option value="Ayobo/Ipaja">Ayobo/Ipaja</option>
+                    <option value="Egbe/Idimu">Egbe/Idimu</option>
+                    <option value="Ikotun/Igando">Ikotun/Igando</option>
+                    <option value="Mosan-Okunola">Mosan-Okunola</option>
+                    <option value="Egbeda">Egbeda</option>
                   </select>
                 </div>
               </div>

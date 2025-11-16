@@ -37,7 +37,7 @@ model School {
   schoolName    String
   schoolAddress String
   slug          String?  @unique
-  zone          Int?
+  zone          String?
   portfolio     String
   founded       Int? // optional
   students      Int? // optional

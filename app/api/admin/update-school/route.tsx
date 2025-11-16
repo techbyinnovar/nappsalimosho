@@ -14,24 +14,27 @@ export async function PUT(req: Request) {
 
     // ✅ Expect JSON body
     const body = await req.json();
-
     const { id } = body;
+
     if (!id) {
       return NextResponse.json({ error: "Missing school ID" }, { status: 400 });
     }
 
     const school = await prisma.school.findUnique({
       where: { id: Number(id) },
+      include: {
+        owner: true, // ✅ include owner for update and prefill
+      },
     });
+
     if (!school) {
       return NextResponse.json({ error: "School not found" }, { status: 404 });
     }
 
-    // ✅ Safely handle numeric fields
+    // ✅ Safely handle numeric fields (still valid for number types)
     const toNumber = (val: any) =>
       val !== undefined && val !== null && val !== "" ? Number(val) : null;
 
-    const zone = toNumber(body.zone);
     const founded = toNumber(body.founded);
     const students = toNumber(body.students);
     const staff = toNumber(body.staff);
@@ -50,14 +53,14 @@ export async function PUT(req: Request) {
       return [];
     };
 
-    // ✅ Perform update (ignore images)
+    // ✅ Update school (zone as string)
     const updatedSchool = await prisma.school.update({
       where: { id: Number(id) },
       data: {
         schoolName: body.schoolName ?? school.schoolName,
         schoolAddress: body.schoolAddress ?? school.schoolAddress,
         portfolio: body.portfolio ?? school.portfolio,
-        zone,
+        zone: body.zone || null, // ✅ now string-based
         founded,
         students,
         staff,
@@ -70,9 +73,45 @@ export async function PUT(req: Request) {
         facilities: parseArray(body.facilities),
         hours: body.hours ?? school.hours,
       },
+      include: {
+        owner: true, // ✅ return updated owner with response
+      },
     });
 
-    return NextResponse.json({ success: true, school: updatedSchool });
+    // ✅ Optionally update owner details if provided
+    if (
+      body.ownerFirstName ||
+      body.ownerLastName ||
+      body.ownerEmail ||
+      body.ownerPhone
+    ) {
+      await prisma.user.update({
+        where: { id: school.ownerId },
+        data: {
+          firstName: body.ownerFirstName ?? school.owner.firstName,
+          lastName: body.ownerLastName ?? school.owner.lastName,
+          email: body.ownerEmail ?? school.owner.email,
+          phone: body.ownerPhone ?? school.owner.phone,
+        },
+      });
+    }
+
+    // ✅ Re-fetch updated data to include fresh owner info
+    const refreshedSchool = await prisma.school.findUnique({
+      where: { id: Number(id) },
+      include: {
+        owner: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+            phone: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json({ success: true, school: refreshedSchool });
   } catch (err: any) {
     console.error("Update school error:", err);
     return NextResponse.json(
@@ -81,6 +120,8 @@ export async function PUT(req: Request) {
     );
   }
 }
+
+
 
 
 
@@ -108,47 +149,63 @@ export async function PUT(req: Request) {
 //       return NextResponse.json({ error: "Missing school ID" }, { status: 400 });
 //     }
 
-//     const school = await prisma.school.findUnique({ where: { id: Number(id) } });
+//     const school = await prisma.school.findUnique({
+//       where: { id: Number(id) },
+//     });
 //     if (!school) {
 //       return NextResponse.json({ error: "School not found" }, { status: 404 });
 //     }
 
-//     // ✅ Parse numeric fields safely
-//     const zone = body.zone ? Number(body.zone) : null;
-//     const founded = body.founded ? Number(body.founded) : null;
-//     const students = body.students ? Number(body.students) : null;
-//     const staff = body.staff ? Number(body.staff) : null;
+//     // ✅ Safely handle numeric fields
+//     const toNumber = (val: any) =>
+//       val !== undefined && val !== null && val !== "" ? Number(val) : null;
 
-//     // ✅ Parse JSON-like fields safely
-//     const parseIfArray = (val: any) =>
-//       Array.isArray(val) ? val : typeof val === "string" ? JSON.parse(val) : [];
+//     const zone = toNumber(body.zone);
+//     const founded = toNumber(body.founded);
+//     const students = toNumber(body.students);
+//     const staff = toNumber(body.staff);
 
-//     // ✅ Update School (ignore images)
-//     const updated = await prisma.school.update({
+//     // ✅ Safely parse arrays
+//     const parseArray = (val: any) => {
+//       if (Array.isArray(val)) return val;
+//       if (typeof val === "string") {
+//         try {
+//           const parsed = JSON.parse(val);
+//           return Array.isArray(parsed) ? parsed : [];
+//         } catch {
+//           return [];
+//         }
+//       }
+//       return [];
+//     };
+
+//     const updatedSchool = await prisma.school.update({
 //       where: { id: Number(id) },
 //       data: {
-//         schoolName: body.schoolName,
-//         schoolAddress: body.schoolAddress,
-//         portfolio: body.portfolio,
+//         schoolName: body.schoolName ?? school.schoolName,
+//         schoolAddress: body.schoolAddress ?? school.schoolAddress,
+//         portfolio: body.portfolio ?? school.portfolio,
 //         zone,
 //         founded,
 //         students,
 //         staff,
-//         tuitionRange: body.tuitionRange,
-//         phone: body.phone,
-//         email: body.email,
-//         website: body.website,
-//         about: body.about,
-//         programs: parseIfArray(body.programs),
-//         facilities: parseIfArray(body.facilities),
-//         hours: body.hours ?? null,
-//         // ❌ no image field here — we’re intentionally ignoring image uploads
+//         tuitionRange: body.tuitionRange ?? school.tuitionRange,
+//         phone: body.phone ?? school.phone,
+//         email: body.email ?? school.email,
+//         website: body.website ?? school.website,
+//         about: body.about ?? school.about,
+//         programs: parseArray(body.programs),
+//         facilities: parseArray(body.facilities),
+//         hours: body.hours ?? school.hours,
 //       },
 //     });
 
-//     return NextResponse.json({ success: true, school: updated });
+//     return NextResponse.json({ success: true, school: updatedSchool });
 //   } catch (err: any) {
 //     console.error("Update school error:", err);
-//     return NextResponse.json({ error: err?.message || "Server error" }, { status: 500 });
+//     return NextResponse.json(
+//       { error: err?.message || "Server error" },
+//       { status: 500 }
+//     );
 //   }
 // }
