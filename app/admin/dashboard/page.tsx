@@ -1,10 +1,22 @@
+// app/admin/dashboard/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { FaEdit, FaTrash, FaToggleOn, FaToggleOff } from "react-icons/fa";
+import RegisterSchoolModal from "@/components/RegisterSchoolModal";
+
+interface Owner {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+}
 
 interface School {
+  owner: Owner;
+  
   id: number;
   schoolName: string;
   schoolAddress: string;
@@ -14,11 +26,15 @@ interface School {
   createdAt: string;
   email?: string;
   phone?: string;
-  owner: {
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
+  students?: string;
+  staff?: string;
+  founded?: string;
+  tuitionRange?: string;
+  website?: string;
+  programs?: string[];
+  facilities?: string[];
+  logoUrl?: string | null;
+  galleryUrls?: string[];
 }
 
 export default function AdminDashboard() {
@@ -31,6 +47,10 @@ export default function AdminDashboard() {
   const [view, setView] = useState<"table" | "grid">("table");
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 5;
+
+  const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
+  const [modalMode, setModalMode] = useState<"create" | "edit">("create");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login");
@@ -61,6 +81,64 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDisable = async (schoolId: number) => {
+    const confirmed = window.confirm("Are you sure you want to disable this school?");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch("/api/admin/disable-school", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schoolId }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        alert(json?.error || "Failed to disable school.");
+        return;
+      }
+
+      alert("School disabled!");
+      fetchSchools();
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Try again.");
+    }
+  };
+
+  const handleDelete = async (schoolId: number) => {
+    const confirmed = window.confirm("Are you sure you want to permanently delete this school?");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch("/api/admin/delete-school", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schoolId }),
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        alert(json?.error || "Failed to delete school.");
+        return;
+      }
+
+      alert("School deleted!");
+      fetchSchools();
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Try again.");
+    }
+  };
+
+  const handleEdit = (schoolId: number) => {
+    const school = schools.find((s) => s.id === schoolId);
+    if (!school) return alert("School not found.");
+    setSelectedSchool(school);
+    setModalMode("edit");
+    setIsModalOpen(true);
+  };
+
   const handleFilterChange = (value: "ALL" | "PENDING" | "APPROVED" | "REJECTED") => {
     setFilter(value);
     setCurrentPage(1);
@@ -77,7 +155,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-green-50 py-10 px-6">
-      <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <div className="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md">
         {/* Header */}
         <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <h1 className="text-2xl font-bold text-green-700">
@@ -90,7 +168,7 @@ export default function AdminDashboard() {
               onChange={(e) =>
                 handleFilterChange(e.target.value as "ALL" | "PENDING" | "APPROVED" | "REJECTED")
               }
-              className="border border-green-600 text-green-700 px-3 py-2 rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none"
+              className="cursor-pointer border border-green-600 text-green-700 px-3 py-2 rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none"
             >
               <option value="ALL">All</option>
               <option value="PENDING">Pending</option>
@@ -100,7 +178,7 @@ export default function AdminDashboard() {
 
             <button
               onClick={() => setView(view === "table" ? "grid" : "table")}
-              className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+              className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition cursor-pointer"
             >
               Switch to {view === "table" ? "Grid" : "Table"} View
             </button>
@@ -111,32 +189,49 @@ export default function AdminDashboard() {
           Review and manage school registrations below.
         </p>
 
-        {/* Table View */}
+        {/* ========================== TABLE VIEW ========================== */}
         {view === "table" && (
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-md">
+            <table className="min-w-full bg-white border border-gray-200 rounded-xl">
               <thead className="bg-green-700 text-white">
                 <tr>
+                  <th className="py-2 px-4 text-left">Logo</th>
                   <th className="py-2 px-4 text-left">School Name</th>
+                  <th className="py-2 px-4 text-left">Address</th>
                   <th className="py-2 px-4 text-left">Zone</th>
-                  <th className="py-2 px-4 text-left">Portfolio</th>
-                  <th className="py-2 px-4 text-left">Owner</th>
-                  <th className="py-2 px-4 text-left">Email</th>
-                  <th className="py-2 px-4 text-left">Phone</th>
+                  <th className="py-2 px-4 text-left">School Email</th>
+                  <th className="py-2 px-4 text-left">School Phone</th>
                   <th className="py-2 px-4 text-left">Status</th>
+                  <th className="py-2 px-4 text-left">Owner Name</th>
+                  <th className="py-2 px-4 text-left">Owner Email</th>
+                  <th className="py-2 px-4 text-left">Owner Phone</th>
+                  <th className="py-2 px-4 text-left">Portfolio</th>
+                  <th className="py-2 px-4 text-left">Students</th>
+                  <th className="py-2 px-4 text-left">Staff</th>
+                  <th className="py-2 px-4 text-left">Year Founded</th>
+                  <th className="py-2 px-4 text-left">Programs</th>
+                  <th className="py-2 px-4 text-left">Facilities</th>
                   <th className="py-2 px-4 text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {paginated.map((school) => (
-                  <tr key={school.id} className="border-t hover:bg-green-50">
-                    <td className="py-2 px-4">{school.schoolName}</td>
-                    <td className="py-2 px-4">{school.zone}</td>
-                    <td className="py-2 px-4">{school.portfolio}</td>
+                  <tr key={school.id} className="border-t border-gray-300 hover:bg-green-50">
                     <td className="py-2 px-4">
-                      {school.owner.firstName} {school.owner.lastName}
+                      {school.logoUrl ? (
+                        <img
+                          src={school.logoUrl}
+                          alt="School Logo"
+                          className="w-12 h-12 object-cover rounded-md border"
+                        />
+                      ) : (
+                        <span className="text-gray-400">No Image</span>
+                      )}
                     </td>
-                    <td className="py-2 px-4">{school.owner.email}</td>
+                    <td className="py-2 px-4">{school.schoolName}</td>
+                    <td className="py-2 px-4">{school.schoolAddress}</td>
+                    <td className="py-2 px-4">{school.zone}</td>
+                    <td className="py-2 px-4">{school.email || "—"}</td>
                     <td className="py-2 px-4">{school.phone || "—"}</td>
                     <td className="py-2 px-4 font-medium">
                       <span
@@ -152,20 +247,59 @@ export default function AdminDashboard() {
                       </span>
                     </td>
                     <td className="py-2 px-4">
-                      {school.status === "PENDING" && (
+                      {school.owner
+                      ? `${school.owner.firstName} ${school.owner.lastName}`
+                      : "—"}
+                    </td>
+                    <td className="py-2 px-4">{school.owner?.email || "—"}</td>
+                    <td className="py-2 px-4">{school.owner?.phone || "—"}</td>
+                    <td className="py-2 px-4">{school.portfolio}</td>
+                    <td className="py-2 px-4">{school.students || "—"}</td>
+                    <td className="py-2 px-4">{school.staff || "—"}</td>
+                    <td className="py-2 px-4">{school.founded || "—"}</td>
+                    <td className="py-2 px-4">{school.programs || "—"}</td>
+                    <td className="py-2 px-4">{school.facilities || "—"}</td>
+                    <td className="py-2 px-4">
+                      {school.status === "PENDING" ? (
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleApproval(school.id, true)}
-                            className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700"
+                            className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 cursor-pointer"
                           >
                             Approve
                           </button>
                           <button
                             onClick={() => handleApproval(school.id, false)}
-                            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
+                            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 cursor-pointer"
                           >
                             Reject
                           </button>
+                        </div>
+                      ) : (
+                        <div className="flex gap-3 text-green-700 text-xl">
+                          <FaEdit
+                            onClick={() => handleEdit(school.id)}
+                            className="cursor-pointer hover:text-green-800"
+                            title="Edit School"
+                          />
+                          <FaTrash
+                            onClick={() => handleDelete(school.id)}
+                            className="cursor-pointer hover:text-red-700"
+                            title="Delete School"
+                          />
+                          {school.status === "APPROVED" ? (
+                            <FaToggleOn
+                              onClick={() => handleDisable(school.id)}
+                              className="cursor-pointer hover:text-yellow-600"
+                              title="Disable School"
+                            />
+                          ) : (
+                            <FaToggleOff
+                              onClick={() => handleApproval(school.id, true)}
+                              className="cursor-pointer hover:text-green-700"
+                              title="Enable School"
+                            />
+                          )}
                         </div>
                       )}
                     </td>
@@ -176,34 +310,49 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Grid View */}
+        {/* ========================== GRID VIEW ========================== */}
         {view === "grid" && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {paginated.map((school) => (
               <div
                 key={school.id}
-                className="border rounded-lg p-5 bg-green-50 hover:bg-green-100 transition"
+                className="border rounded-lg shadow-sm hover:shadow-md transition bg-white overflow-hidden"
               >
-                <h2 className="text-lg font-semibold text-green-800 mb-1">
-                  {school.schoolName}
-                </h2>
-                <p className="text-sm text-gray-700 mb-2">{school.schoolAddress}</p>
-                <p className="text-sm text-gray-700">
-                  <strong>Zone:</strong> {school.zone}
-                </p>
-                <p className="text-sm text-gray-700">
-                  <strong>Owner:</strong> {school.owner.firstName} {school.owner.lastName}
-                </p>
-                <p className="text-sm text-gray-700">
-                  <strong>Email:</strong> {school.owner.email}
-                </p>
-                <p className="text-sm text-gray-700">
-                  <strong>Phone:</strong> {school.phone || "—"}
-                </p>
-                <p className="mt-2 text-sm font-medium">
-                  <strong>Status:</strong>{" "}
+                {school.logoUrl && (
+                  <img
+                    src={school.logoUrl}
+                    alt={school.schoolName}
+                    className="w-full h-40 object-cover border-b"
+                  />
+                )}
+                <div className="p-4">
+                  <h2 className="text-lg font-semibold text-green-700 mb-1">
+                    {school.schoolName}
+                  </h2>
+                  <p className="text-gray-600 text-sm mb-2">{school.schoolAddress}</p>
+                  <p className="text-gray-700 text-sm">
+                    <strong>Zone:</strong> {school.zone}
+                  </p>
+                  <p className="text-gray-700 text-sm">
+                    <strong>Portfolio:</strong> {school.portfolio}
+                  </p>
+                  <p className="text-gray-700 text-sm">
+                    <strong>Owner:</strong> {school.owner.firstName} {school.owner.lastName}
+                  </p>
+                  <p className="text-gray-700 text-sm">
+                    <strong>Email:</strong> {school.owner.email}
+                  </p>
+                  <p className="text-gray-700 text-sm">
+                    <strong>Phone:</strong> {school.owner.phone || "—"}
+                  </p>
+                  <p className="text-gray-700 text-sm mt-1">
+                    <strong>School Email:</strong> {school.email || "—"}
+                  </p>
+                  <p className="text-gray-700 text-sm mb-2">
+                    <strong>School Phone:</strong> {school.phone || "—"}
+                  </p>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs ${
+                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
                       school.status === "PENDING"
                         ? "bg-yellow-100 text-yellow-700"
                         : school.status === "APPROVED"
@@ -213,24 +362,33 @@ export default function AdminDashboard() {
                   >
                     {school.status}
                   </span>
-                </p>
 
-                {school.status === "PENDING" && (
-                  <div className="flex gap-2 mt-4">
-                    <button
-                      onClick={() => handleApproval(school.id, true)}
-                      className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handleApproval(school.id, false)}
-                      className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
-                    >
-                      Reject
-                    </button>
+                  <div className="flex gap-3 mt-3 text-green-700 text-xl">
+                    <FaEdit
+                      onClick={() => handleEdit(school.id)}
+                      className="cursor-pointer hover:text-green-800"
+                      title="Edit School"
+                    />
+                    <FaTrash
+                      onClick={() => handleDelete(school.id)}
+                      className="cursor-pointer hover:text-red-700"
+                      title="Delete School"
+                    />
+                    {school.status === "APPROVED" ? (
+                      <FaToggleOn
+                        onClick={() => handleDisable(school.id)}
+                        className="cursor-pointer hover:text-yellow-600"
+                        title="Disable School"
+                      />
+                    ) : (
+                      <FaToggleOff
+                        onClick={() => handleApproval(school.id, true)}
+                        className="cursor-pointer hover:text-green-700"
+                        title="Enable School"
+                      />
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
@@ -267,6 +425,15 @@ export default function AdminDashboard() {
           <p className="text-center text-gray-500 mt-6">No schools found.</p>
         )}
       </div>
+
+      {/* Modal */}
+      <RegisterSchoolModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        schoolToEdit={selectedSchool}
+        mode={modalMode}
+        onSaved={fetchSchools}
+      />
     </div>
   );
 }

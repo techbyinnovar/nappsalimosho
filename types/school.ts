@@ -6,7 +6,7 @@ export interface School {
   id: number;
   schoolName: string;
   schoolAddress: string;
-  zone: number | null;
+  zone: string | null;
   portfolio?: string;
   founded?: number | null;
   students?: number | null;
@@ -19,6 +19,8 @@ export interface School {
   programs?: string[];
   facilities?: string[];
   hours?: string | null;
+  logoUrl: string;
+  galleryUrls: string[];
   highlights?: {
     icon: string; // lucide icon name
     title: string;
@@ -49,37 +51,8 @@ export type SafeSchool = Omit<
 
 
 export interface Zone {
-  id: number;
+  id: string;
   name: string;
   schoolCount: number;
   schools: School[];
 }
-
-
-
-// export interface School {
-//   id: string;
-//   name: string;
-//   zone: number;
-//   description: string;
-//   founded: number;
-//   students: number;
-//   staff: number;
-//   tuitionRange: string;
-//   address: string;
-//   phone: string;
-//   email: string;
-//   website: string;
-//   about: string[];
-//   highlights: {
-//     icon: string; // lucide icon name
-//     title: string;
-//     text: string;
-//   }[];
-//   programs: string[];
-//   facilities: string[];
-//   hours: {
-//     days: string;
-//     time: string;
-//   }[];
-// }

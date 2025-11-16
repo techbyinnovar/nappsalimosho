@@ -14,10 +14,6 @@ export default function Stats() {
                     <p className="text-2xl">Member Schools</p>
                 </div>
             </div>
-            {/* <div>
-                <h2 className="text-3xl font-bold">266+</h2>
-                <p>Private School Owners</p>
-            </div> */}
             <div className="border-r border-dashed">
                 <LiaAwardSolid className="w-14 h-14 mx-auto mb-4 text-white" />
                 <div>

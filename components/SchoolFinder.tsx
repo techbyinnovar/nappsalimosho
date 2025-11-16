@@ -5,19 +5,19 @@ import Image from "next/image";
 import logo from '../public/images/logo.png';
 
 type School = {
-  id: string;
-  name: string;
-  level: "Primary" | "Junior Secondary" | "Senior Secondary" | "All";
-  type: "Day" | "Boarding" | "Montessori" | "Mixed";
-  location: string;
-  zone: string;
-  rating: number;
-  fee: number;
-  img: any;
-  description: string;
-  distanceKm?: number;
-  phone?: string;
-  email?: string;
+    id: string;
+    name: string;
+    level: "Primary" | "Junior Secondary" | "Senior Secondary" | "All";
+    type: "Day" | "Boarding" | "Montessori" | "Mixed";
+    location: string;
+    zone: string;
+    rating: number;
+    fee: number;
+    img: any;
+    description: string;
+    distanceKm?: number;
+    phone?: string;
+    email?: string;
 };
 
 const SCHOOLS: School[] = [

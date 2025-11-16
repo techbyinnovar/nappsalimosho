@@ -1,3 +1,4 @@
+// app/api/zones/route.ts
 import { prisma } from "@/src/server/prisma";
 import { NextResponse } from "next/server";
 
@@ -6,9 +7,6 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search") || "";
 
-    const searchAsNumber = Number(search);
-
-    // Build the dynamic where clause
     const whereClause: any = {
       status: "APPROVED",
       ...(search
@@ -20,9 +18,12 @@ export async function GET(req: Request) {
                   mode: "insensitive" as const,
                 },
               },
-              ...(isNaN(searchAsNumber)
-                ? []
-                : [{ zone: searchAsNumber }]),
+              {
+                zone: {
+                  contains: search,
+                  mode: "insensitive" as const,
+                },
+              },
             ],
           }
         : {}),

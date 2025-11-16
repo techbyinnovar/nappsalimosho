@@ -10,8 +10,10 @@ import SchoolOwnerContact from "@/components/SchoolOwnerContact";
 import { SafeSchool } from "@/types/school";
 
 export default async function ZoneSchoolPage({ params }: { params: { slug: string } }) {
+  const { slug } = await params;
+
   const schoolData = await prisma.school.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     include: {
       owner: {
         select: {
@@ -58,6 +60,7 @@ export default async function ZoneSchoolPage({ params }: { params: { slug: strin
         staff={school.staff || 0}
         students={school.students || 0}
         about={school.about || ""}
+        logoUrl={school.logoUrl || null}
       />
       <div className="container">
         <div className="grid lg:grid-cols-3 gap-8 mt-12 md:px-24 px-6">

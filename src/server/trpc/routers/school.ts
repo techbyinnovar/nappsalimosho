@@ -1,6 +1,6 @@
 // src/server/trpc/routers/school.ts
 import { z } from "zod";
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { router, protectedProcedure } from "../trpc";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -64,7 +64,7 @@ export const schoolRouter = router({
         schoolName: z.string(),
         schoolAddress: z.string(),
         portfolio: z.string(),
-        zone: z.number(),
+        zone: z.string().optional(),
         email: z.string().optional(),
         phone: z.string().optional(),
         website: z.string().optional(),
@@ -87,7 +87,7 @@ export const schoolRouter = router({
           schoolName: input.schoolName,
           schoolAddress: input.schoolAddress,
           portfolio: input.portfolio,
-          zone: input.zone,
+          zone: input.zone || null,
           email: input.email || null,
           phone: input.phone || null,
           website: input.website || null,
