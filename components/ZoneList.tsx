@@ -10,23 +10,23 @@ type ApiSchool = {
   id: number;
   slug: string;
   schoolName: string;
-  zone: number | null;
+  zone: string | null; 
   schoolAddress?: string | null;
   phone?: string | null;
   email?: string | null;
 };
 
 type ZoneWithSchools = {
-  id: number;
+  id: string; 
   name: string;
   schools: ApiSchool[];
 };
 
 export default function ZoneList() {
-  const [openZone, setOpenZone] = useState<number | null>(1);
+  const [openZone, setOpenZone] = useState<string | null>("Agbado/Oke-odo"); 
   const [searchTerm, setSearchTerm] = useState("");
   const [zones, setZones] = useState<ZoneWithSchools[]>(
-    centralZones.map((z) => ({ ...z, schools: [] }))
+    centralZones.map((z) => ({ ...z, id: String(z.id), schools: [] })) 
   );
   const [loading, setLoading] = useState(false);
 
@@ -41,16 +41,19 @@ export default function ZoneList() {
       if (!res.ok) throw new Error("Failed to fetch schools");
       const apiSchools: ApiSchool[] = await res.json();
 
-      // Group schools by their numeric zone
+      // 🟢 Group schools by string zone
       const merged: ZoneWithSchools[] = centralZones.map((z) => {
-        const matching = apiSchools.filter((s) => s.zone === z.id);
-        return { ...z, schools: matching };
+        const zoneName = String(z.name).toLowerCase();
+        const matching = apiSchools.filter(
+          (s) => s.zone?.toLowerCase() === zoneName
+        );
+        return { ...z, id: String(z.id), schools: matching };
       });
 
-      // Add "Unzoned" bucket for schools without zone
-      const unzoned = apiSchools.filter((s) => s.zone === null);
+      // 🟢 Add "Unzoned" bucket for schools without zone
+      const unzoned = apiSchools.filter((s) => !s.zone);
       if (unzoned.length > 0) {
-        merged.push({ id: 999, name: "Unzoned", schools: unzoned });
+        merged.push({ id: "unzoned", name: "Unzoned", schools: unzoned });
       }
 
       setZones(merged);
@@ -99,4 +102,3 @@ export default function ZoneList() {
     </div>
   );
 }
-

@@ -20,7 +20,7 @@ interface School {
   id: number;
   schoolName: string;
   schoolAddress: string;
-  zone: number;
+  zone: string;
   portfolio: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
   createdAt: string;
@@ -168,7 +168,7 @@ export default function AdminDashboard() {
               onChange={(e) =>
                 handleFilterChange(e.target.value as "ALL" | "PENDING" | "APPROVED" | "REJECTED")
               }
-              className="border border-green-600 text-green-700 px-3 py-2 rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none"
+              className="cursor-pointer border border-green-600 text-green-700 px-3 py-2 rounded-md focus:ring-2 focus:ring-green-600 focus:outline-none"
             >
               <option value="ALL">All</option>
               <option value="PENDING">Pending</option>
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
 
             <button
               onClick={() => setView(view === "table" ? "grid" : "table")}
-              className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition"
+              className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition cursor-pointer"
             >
               Switch to {view === "table" ? "Grid" : "Table"} View
             </button>
@@ -264,13 +264,13 @@ export default function AdminDashboard() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleApproval(school.id, true)}
-                            className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700"
+                            className="bg-green-600 text-white px-3 py-1 rounded-md hover:bg-green-700 cursor-pointer"
                           >
                             Approve
                           </button>
                           <button
                             onClick={() => handleApproval(school.id, false)}
-                            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700"
+                            className="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700 cursor-pointer"
                           >
                             Reject
                           </button>
