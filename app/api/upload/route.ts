@@ -1,10 +1,10 @@
-// app/api/uploads/route.ts
+// app/api/upload/route.ts
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/lib/auth";
 
-export const runtime = "edge"; // Vercel Blob requires edge runtime
+export const runtime = "nodejs"; // Vercel Blob requires edge runtime
 
 export async function POST(req: Request) {
   try {
