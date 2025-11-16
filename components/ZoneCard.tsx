@@ -38,7 +38,7 @@ export default function ZoneCard({ zone, isOpen, onToggle }: ZoneCardProps) {
             {zone.schools.length}
           </span>
         </div>
-        <span>{isOpen ? "−" : "+"}</span>
+        <span>{isOpen ? "-" : "+"}</span>
       </button>
 
       {isOpen && (
